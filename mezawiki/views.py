@@ -125,11 +125,13 @@ def wiki_page_edit(request, slug,
         initial = {'content': _('Describe your new page %s here...' % slug)}
                    #'message': _('Initial revision')}
 
-    if request.method == 'POST': # If the form has been submitted...
+    if request.method == 'POST':
         form = WikiPageForm(request.POST, instance=wiki_page)
-        if form.is_valid(): # All validation rules pass
-            # Process the data in form.cleaned_data
-            form.save()
+        if form.is_valid():
+            page = form.save(commit=False)
+            page.user = request.user
+            page.title = slug
+            page.save()
             return HttpResponseRedirect(
                 reverse('wiki_page_detail', args=[slug]))
     else:
