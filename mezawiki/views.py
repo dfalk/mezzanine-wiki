@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django import VERSION
+from django.utils.translation import ugettext as _
 
 from mezawiki.models import WikiPage, WikiCategory
 #from mezzanine.blog.feeds import PostsRSS, PostsAtom
@@ -97,8 +98,11 @@ def wiki_page_detail(request, slug, year=None, month=None,
     ``mezawiki/wiki_page_detail_XXX.html`` where ``XXX`` is the wiki
     pages's slug.
     """
-    wiki_pages = WikiPage.objects.published(for_user=request.user)
-    wiki_page = get_object_or_404(wiki_pages, slug=slug)
+    try:
+        wiki_pages = WikiPage.objects.published(for_user=request.user)
+        wiki_page = wiki_pages.get(slug=slug)
+    except WikiPage.DoesNotExist:
+        return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
     context = {"wiki_page": wiki_page}
     templates = [u"mezawiki/wiki_page_detail_%s.html" % unicode(slug), template]
     return render(request, templates, context)
@@ -111,17 +115,25 @@ def wiki_page_edit(request, slug,
     pages's slug.
     """
 
-    wiki_pages = WikiPage.objects.published(for_user=request.user)
-    wiki_page = get_object_or_404(wiki_pages, slug=slug)
+    try:
+        wiki_pages = WikiPage.objects.published(for_user=request.user)
+        wiki_page = wiki_pages.get(slug=slug)
+        initial = {}
+    except WikiPage.DoesNotExist:
+        wiki_page = WikiPage(slug=slug)
+        wiki_page.is_initial = True
+        initial = {'content': _('Describe your new page %s here...' % slug)}
+                   #'message': _('Initial revision')}
 
     if request.method == 'POST': # If the form has been submitted...
         form = WikiPageForm(request.POST, instance=wiki_page)
         if form.is_valid(): # All validation rules pass
             # Process the data in form.cleaned_data
             form.save()
-            return HttpResponseRedirect(reverse('wiki_page_detail', args=[slug])) # Redirect after POST
+            return HttpResponseRedirect(
+                reverse('wiki_page_detail', args=[slug]))
     else:
-        form = WikiPageForm(instance=wiki_page)
+        form = WikiPageForm(initial=initial, instance=wiki_page)
 
     context = {"wiki_page": wiki_page, 'form': form}
     templates = [u"mezawiki/wiki_page_edit_%s.html" % unicode(slug), template]

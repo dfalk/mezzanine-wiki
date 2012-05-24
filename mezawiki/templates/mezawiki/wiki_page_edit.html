@@ -30,6 +30,7 @@
 
 {% block main %}
 
+{% if not wiki_page.is_initial %}
 <h6>
     {% trans "Posted by" %}:
     {% with wiki_page.user as author %}
@@ -43,6 +44,7 @@
     {% endif %}
     {{ wiki_page.publish_date|timesince }} {% trans "ago" %}
 </h6>
+{% endif %}
 
 {% if wiki_page.featured_image %}
 <p><img src="{{ MEDIA_URL }}{% thumbnail wiki_page.featured_image 600 0 %}"></p>
