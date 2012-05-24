@@ -35,6 +35,12 @@
     {% with wiki_page.user as author %}
     <a href="{% url wiki_page_list_author author %}">{{ author.get_full_name|default:author.username }}</a>
     {% endwith %}
+    {% if wiki_page.categories.all.count > 0 %}
+    {% trans "in" %}
+    {% for category in wiki_page.categories.all %}
+    <a href="{% url wiki_page_list_category category.slug %}">{{ category }}</a>
+    {% endfor %}
+    {% endif %}
     {{ wiki_page.publish_date|timesince }} {% trans "ago" %}
 </h6>
 <p>
@@ -43,8 +49,8 @@
     {% endspaceless %}</a>){% endif %}
 </p>
 
-{% if blog_post.featured_image %}
-<p><img src="{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 600 0 %}"></p>
+{% if wiki_page.featured_image %}
+<p><img src="{{ MEDIA_URL }}{% thumbnail wiki_page.featured_image 600 0 %}"></p>
 {% endif %}
 
 {% editable wiki_page.content %}
