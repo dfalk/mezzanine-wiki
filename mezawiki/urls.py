@@ -9,6 +9,7 @@ urlpatterns = patterns("mezawiki.views",
         name="wiki_page_list_category"),
     url("^author/(?P<username>.*)/$", "wiki_page_list",
         name="wiki_page_list_author"),
+    url("^(?P<slug>.*)/edit/$", "wiki_page_edit", name="wiki_page_edit"),
     url("^(?P<slug>.*)/$", "wiki_page_detail", name="wiki_page_detail"),
     url("^$", "wiki_page_list", name="wiki_page_list"),
 )

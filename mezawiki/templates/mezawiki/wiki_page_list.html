@@ -90,7 +90,7 @@
 {% endif %}
 
 {% editable wiki_page.content %}
-{{ wiki_page.description_from_content|safe }}
+{{ wiki_page.description_from_content|wikitext_filter|safe }}
 {% endeditable %}
 
 <p class="blog-list-detail">

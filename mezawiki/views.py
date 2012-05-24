@@ -5,6 +5,8 @@ from django.http import Http404
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django import VERSION
 
 from mezawiki.models import WikiPage, WikiCategory
@@ -12,6 +14,7 @@ from mezawiki.models import WikiPage, WikiCategory
 from mezzanine.conf import settings
 from mezzanine.generic.models import AssignedKeyword, Keyword
 from mezzanine.utils.views import render, paginate
+from mezawiki.forms import WikiPageForm
 
 
 def wiki_page_list(request, tag=None, username=None,
@@ -99,4 +102,29 @@ def wiki_page_detail(request, slug, year=None, month=None,
     context = {"wiki_page": wiki_page}
     templates = [u"mezawiki/wiki_page_detail_%s.html" % unicode(slug), template]
     return render(request, templates, context)
+
+
+def wiki_page_edit(request, slug, 
+                     template="mezawiki/wiki_page_edit.html"):
+    """. Custom templates are checked for using the name
+    ``mezawiki/wiki_page_edit_XXX.html`` where ``XXX`` is the wiki
+    pages's slug.
+    """
+
+    wiki_pages = WikiPage.objects.published(for_user=request.user)
+    wiki_page = get_object_or_404(wiki_pages, slug=slug)
+
+    if request.method == 'POST': # If the form has been submitted...
+        form = WikiPageForm(request.POST, instance=wiki_page)
+        if form.is_valid(): # All validation rules pass
+            # Process the data in form.cleaned_data
+            form.save()
+            return HttpResponseRedirect(reverse('wiki_page_detail', args=[slug])) # Redirect after POST
+    else:
+        form = WikiPageForm(instance=wiki_page)
+
+    context = {"wiki_page": wiki_page, 'form': form}
+    templates = [u"mezawiki/wiki_page_edit_%s.html" % unicode(slug), template]
+    return render(request, templates, context)
+
 
