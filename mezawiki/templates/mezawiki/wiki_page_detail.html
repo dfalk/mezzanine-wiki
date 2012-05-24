@@ -1,0 +1,74 @@
+{% extends "mezawiki/wiki_page_list.html" %}
+{% load mezzanine_tags comment_tags keyword_tags rating_tags i18n %}
+
+{% block meta_title %}{{ wiki_page.title }}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for wiki_page as tags %}
+{% for tag in tags %}{% if not forloop.first %}, {% endif %}{{ tag }}{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ wiki_page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% editable wiki_page.title %}{{ wiki_page.title }}{% endeditable %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="{% url home %}">{% trans "Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="{% url wiki_page_list %}">{{ page.richtextpage.title }}</a>
+    <span class="divider">/</span>
+</li>
+<li class="active">{{ wiki_page.title }}</li>
+{% endblock %}
+
+{% block main %}
+
+<h6>
+    {% trans "Posted by" %}:
+    {% with wiki_page.user as author %}
+    <a href="{% url wiki_page_list_author author %}">{{ author.get_full_name|default:author.username }}</a>
+    {% endwith %}
+    {{ wiki_page.publish_date|timesince }} {% trans "ago" %}
+</h6>
+<p>
+    {% if wiki_page.allow_comments %}(<a href="#comments">{% spaceless %}
+        {% blocktrans count wiki_page.comments_count as comments_count %}1 comment{% plural %}{{ comments_count }} comments{% endblocktrans %}
+    {% endspaceless %}</a>){% endif %}
+</p>
+
+{% if blog_post.featured_image %}
+<p><img src="{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 600 0 %}"></p>
+{% endif %}
+
+{% editable wiki_page.content %}
+{{ wiki_page.content|richtext_filter|safe }}
+{% endeditable %}
+
+{% keywords_for wiki_page as tags %}
+{% if tags %}
+{% spaceless %}
+<ul class="unstyled tags">
+    <li>{% trans "Tags" %}:</li>
+    {% for tag in tags %}
+    <li><a href="{% url wiki_page_list_tag tag.slug %}">{{ tag }}</a></li>
+    {% endfor %}
+</ul>
+{% endspaceless %}
+{% endif %}
+
+{% rating_for wiki_page %}
+
+{% set_short_url_for wiki_page %}
+<a class="btn small primary share-twitter" target="_blank" href="http://twitter.com/home?status={{ wiki_page.short_url|urlencode }}%20{{ wiki_page.title|urlencode }}">{% trans "Share on Twitter" %}</a>
+<a class="btn small primary share-facebook" target="_blank" href="http://facebook.com/sharer.php?u={{ request.build_absolute_uri }}&amp;t={{ wiki_page.title|urlencode }}">{% trans "Share on Facebook" %}</a>
+
+{% if wiki_page.allow_comments %}{% comments_for wiki_page %}{% endif %}
+
+{% endblock %}
