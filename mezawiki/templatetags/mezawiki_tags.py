@@ -6,6 +6,8 @@ from django.db.models import Count
 
 from mezawiki.models import WikiPage, WikiCategory
 from mezzanine import template
+from mezzanine.conf import settings
+from mezzanine.utils.importing import import_dotted_path
 
 
 register = template.Library()
@@ -53,4 +55,17 @@ def wiki_recent_pages(limit=5):
     Put a list of recently published wiki pages into the template context.
     """
     return list(WikiPage.objects.published()[:limit])
+
+
+@register.filter
+def wikitext_filter(content):
+    """
+    This template filter takes a string value and passes it through the
+    function specified by the WIKI_TEXT_FILTER setting.
+    """
+    if settings.WIKI_TEXT_FILTER:
+        func = import_dotted_path(settings.WIKI_TEXT_FILTER)
+    else:
+        func = lambda s: s
+    return func(content)
 

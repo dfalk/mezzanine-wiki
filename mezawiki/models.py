@@ -6,9 +6,24 @@ from mezzanine.conf import settings
 from mezzanine.core.fields import FileField
 from mezzanine.core.models import Displayable, Ownable, RichText, Slugged
 from mezzanine.generic.fields import CommentsField, RatingField
+from mezawiki.fields import WikiTextField
 
 
-class WikiPage(Displayable, Ownable, RichText):
+class WikiText(models.Model):
+    """
+    Provides a Markup Text field for managing general content and making
+    it searchable.
+    """
+
+    content = WikiTextField(_("Content"))
+
+    search_fields = ("content",)
+
+    class Meta:
+        abstract = True
+
+
+class WikiPage(Displayable, Ownable, WikiText):
     """
     A wiki page.
     """

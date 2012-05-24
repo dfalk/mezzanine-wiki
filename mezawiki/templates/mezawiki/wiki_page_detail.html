@@ -1,5 +1,5 @@
 {% extends "mezawiki/wiki_page_list.html" %}
-{% load mezzanine_tags comment_tags keyword_tags rating_tags i18n %}
+{% load mezzanine_tags mezawiki_tags markup comment_tags keyword_tags rating_tags i18n %}
 
 {% block meta_title %}{{ wiki_page.title }}{% endblock %}
 
@@ -54,7 +54,7 @@
 {% endif %}
 
 {% editable wiki_page.content %}
-{{ wiki_page.content|richtext_filter|safe }}
+{{ wiki_page.content|wikitext_filter|safe }}
 {% endeditable %}
 
 {% keywords_for wiki_page as tags %}
