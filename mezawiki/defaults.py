@@ -28,7 +28,7 @@ register_setting(
     name="WIKI_TEXT_FILTER",
     description=_("Wiki markup language filter"),
     editable=False,
-    default="mezawiki.filters.plain",
+    default="mezawiki.filters.md_wikilinks",
 )
 
 register_setting(

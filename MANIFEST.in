@@ -1,2 +1,3 @@
 include CHANGELOG LICENSE README.rst
 recursive-include mezawiki *
+
