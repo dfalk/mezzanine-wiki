@@ -7,7 +7,7 @@ register_setting(
     name="WIKI_DEFAULT_INDEX",
     description=_("Wiki default index page"),
     editable=False,
-    default="MainPage",
+    default="Main_page",
 )
 
 register_setting(
