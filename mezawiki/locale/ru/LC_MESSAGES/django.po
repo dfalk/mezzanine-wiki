@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-24 20:45+0400\n"
+"POT-Creation-Date: 2012-05-25 15:55+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,134 +17,153 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
-#: models.py:17 templates/mezawiki/includes/filter_panel.html:16
+#: defaults.py:8
+msgid "Wiki default index page"
+msgstr "Вики страница по умолчанию"
+
+#: defaults.py:15
+msgid "Wiki uses featured image"
+msgstr "Вики страницы с главным изображением"
+
+#: defaults.py:22
+msgid "Wiki pages per page"
+msgstr "Список вики страниц в списке"
+
+#: defaults.py:29
+msgid "Wiki markup language filter"
+msgstr "Фильтр разметки вики"
+
+#: defaults.py:36
+msgid "Wiki text widget class"
+msgstr "Класс виджета для текста вики"
+
+#: fields.py:23
+#, python-format
+msgid "Could not import the value of settings.WIKI_TEXT_WIDGET_CLASS: %s"
+msgstr ""
+
+#: models.py:18
+msgid "Content"
+msgstr "Содержимое"
+
+#: models.py:32 templates/mezawiki/includes/filter_panel.html:16
 msgid "Categories"
-msgstr ""
+msgstr "Категории"
 
-#: models.py:19
+#: models.py:34
 msgid "Allow comments"
-msgstr ""
+msgstr "Разрешить комментарии"
 
-#: models.py:21 templates/mezawiki/wiki_page_list.html:111
+#: models.py:36
 msgid "Comments"
-msgstr ""
+msgstr "Комментарии"
 
-#: models.py:22
+#: models.py:37
 msgid "Rating"
-msgstr ""
+msgstr "Рейтинг"
 
-#: models.py:23
+#: models.py:38
 msgid "Featured Image"
-msgstr ""
+msgstr "Главное изображение"
 
-#: models.py:27
+#: models.py:42
 msgid "Wiki page"
-msgstr ""
+msgstr "Вики-страница"
 
-#: models.py:28
+#: models.py:43
 msgid "Wiki pages"
-msgstr ""
+msgstr "Вики-страницы"
 
-#: models.py:44
+#: models.py:59
 msgid "Wiki Category"
-msgstr ""
+msgstr "Вики категория"
 
-#: models.py:45
+#: models.py:60
 msgid "Wiki Categories"
-msgstr ""
+msgstr "Вики категории"
 
-#: templates/admin/includes/quick_blog.html:18
-msgid "Quick Blog"
-msgstr ""
-
-#: templates/admin/includes/quick_blog.html:27
-msgid "Save Draft"
-msgstr ""
+#: views.py:142
+#, python-format
+msgid "Describe your new page %s here..."
+msgstr "Содержание вашей страницы %s будет здесь..."
 
 #: templates/mezawiki/wiki_page_detail.html:21
+#: templates/mezawiki/wiki_page_edit.html:21
 msgid "Home"
-msgstr ""
+msgstr "Главная"
 
 #: templates/mezawiki/wiki_page_detail.html:34
+#: templates/mezawiki/wiki_page_edit.html:35
 #: templates/mezawiki/wiki_page_list.html:74
 msgid "Posted by"
-msgstr ""
+msgstr "автор"
 
-#: templates/mezawiki/wiki_page_detail.html:38
+#: templates/mezawiki/wiki_page_detail.html:39
+#: templates/mezawiki/wiki_page_edit.html:40
+#: templates/mezawiki/wiki_page_list.html:79
+msgid "in"
+msgstr "в"
+
+#: templates/mezawiki/wiki_page_detail.html:44
+#: templates/mezawiki/wiki_page_edit.html:45
 #: templates/mezawiki/wiki_page_list.html:84
 msgid "ago"
-msgstr ""
+msgstr "назад"
 
-#: templates/mezawiki/wiki_page_detail.html:42
-#: templates/mezawiki/wiki_page_list.html:115
-#, python-format
-msgid "1 comment"
-msgid_plural "%(comments_count)s comments"
-msgstr[0] ""
-msgstr[1] ""
-
-#: templates/mezawiki/wiki_page_detail.html:58
-#: templates/mezawiki/wiki_page_list.html:98
+#: templates/mezawiki/wiki_page_detail.html:59
+#: templates/mezawiki/wiki_page_edit.html:62
 #: templates/mezawiki/includes/filter_panel.html:27
 msgid "Tags"
-msgstr ""
+msgstr "Теги"
 
-#: templates/mezawiki/wiki_page_detail.html:69
-msgid "Share on Twitter"
-msgstr ""
+#: templates/mezawiki/wiki_page_detail.html:67
+msgid "Edit page"
+msgstr "Редактировать страницу"
 
-#: templates/mezawiki/wiki_page_detail.html:70
-msgid "Share on Facebook"
-msgstr ""
+#: templates/mezawiki/wiki_page_edit.html:55
+msgid "Save"
+msgstr "Сохранить"
 
 #: templates/mezawiki/wiki_page_list.html:4
 #: templates/mezawiki/wiki_page_list.html:22
 msgid "Wiki"
-msgstr ""
+msgstr "Вики"
 
 #: templates/mezawiki/wiki_page_list.html:31
 msgid "Tag:"
-msgstr ""
+msgstr "Тег:"
 
 #: templates/mezawiki/wiki_page_list.html:33
 msgid "Category:"
-msgstr ""
+msgstr "Категория:"
 
 #: templates/mezawiki/wiki_page_list.html:37
 msgid "Author:"
-msgstr ""
+msgstr "Автор:"
 
 #: templates/mezawiki/wiki_page_list.html:49
 msgid "Viewing pages tagged"
-msgstr ""
+msgstr "Просмотр страниц по тегу"
 
 #: templates/mezawiki/wiki_page_list.html:51
 msgid "Viewing pages for the category"
-msgstr ""
+msgstr "Просмотр страниц из категории"
 
 #: templates/mezawiki/wiki_page_list.html:53
 msgid "Viewing pages from"
-msgstr ""
+msgstr "Просмотр страниц за"
 
 #: templates/mezawiki/wiki_page_list.html:56
 msgid "Viewing pages by"
-msgstr ""
-
-#: templates/mezawiki/wiki_page_list.html:79
-msgid "in"
-msgstr ""
-
-#: templates/mezawiki/wiki_page_list.html:106
-msgid "read more"
-msgstr ""
+msgstr "Просмотр страниц автора"
 
 #: templates/mezawiki/includes/filter_panel.html:5
 msgid "Recent Pages"
-msgstr ""
+msgstr "Последние страницы"
 
 #: templates/mezawiki/includes/filter_panel.html:41
 msgid "Authors"
-msgstr ""
+msgstr "Авторы"
