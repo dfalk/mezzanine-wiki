@@ -19,9 +19,9 @@ from mezawiki.forms import WikiPageForm
 
 
 def wiki_index(request, template_name='mezawiki/wiki_page_detail.html'):
-    '''
+    """
     Redirects to the default wiki index name.
-    '''
+    """
     return HttpResponseRedirect(
         reverse('wiki_page_detail', args=[settings.WIKI_DEFAULT_INDEX])
     )
@@ -31,7 +31,9 @@ def wiki_page_list(request, tag=None, username=None,
                    category=None, template="mezawiki/wiki_page_list.html"):
     """
     Display a list of wiki pages that are filtered by tag, 
-    author or category. Custom templates are checked for using the name
+    author or category.
+
+    Custom templates are checked for using the name
     ``mezawiki/wiki_page_list_XXX.html`` where ``XXX`` is either the
     category slug or author's username if given.
     """
@@ -103,9 +105,13 @@ def wiki_page_list(request, tag=None, username=None,
 
 def wiki_page_detail(request, slug, year=None, month=None,
                      template="mezawiki/wiki_page_detail.html"):
-    """. Custom templates are checked for using the name
-    ``mezawiki/wiki_page_detail_XXX.html`` where ``XXX`` is the wiki
-    pages's slug.
+    """
+    Displays a wiki page.
+    Redirects to the edit view if the page doesn't exist.
+
+    Custom templates are checked for using the name
+    ``mezawiki/wiki_page_detail_XXX.html``
+    where ``XXX`` is the wiki pages's slug.
     """
     try:
         wiki_pages = WikiPage.objects.published(for_user=request.user)
@@ -119,11 +125,13 @@ def wiki_page_detail(request, slug, year=None, month=None,
 
 def wiki_page_edit(request, slug, 
                      template="mezawiki/wiki_page_edit.html"):
-    """. Custom templates are checked for using the name
-    ``mezawiki/wiki_page_edit_XXX.html`` where ``XXX`` is the wiki
-    pages's slug.
     """
+    Displays the form for editing and deleting a page.
 
+    Custom templates are checked for using the name
+    ``mezawiki/wiki_page_edit_XXX.html``
+    where ``XXX`` is the wiki pages's slug.
+    """
     try:
         wiki_pages = WikiPage.objects.published(for_user=request.user)
         wiki_page = wiki_pages.get(slug=slug)
