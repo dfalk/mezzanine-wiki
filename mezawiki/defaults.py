@@ -4,6 +4,13 @@ from mezzanine.conf import register_setting
 
 
 register_setting(
+    name="WIKI_DEFAULT_INDEX",
+    description=_("Wiki default index page"),
+    editable=False,
+    default="MainPage",
+)
+
+register_setting(
     name="WIKI_USE_FEATURED_IMAGE",
     description=_("Wiki uses featured image"),
     editable=False,

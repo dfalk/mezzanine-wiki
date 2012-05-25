@@ -4,6 +4,7 @@ from django.conf.urls.defaults import patterns, url
 
 # Wiki patterns.
 urlpatterns = patterns("mezawiki.views",
+    url("^$", "wiki_index", name="wiki_index"),
     url("^tag/(?P<tag>.*)/$", "wiki_page_list", name="wiki_page_list_tag"),
     url("^category/(?P<category>.*)/$", "wiki_page_list",
         name="wiki_page_list_category"),

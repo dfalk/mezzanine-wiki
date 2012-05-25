@@ -18,6 +18,15 @@ from mezzanine.utils.views import render, paginate
 from mezawiki.forms import WikiPageForm
 
 
+def wiki_index(request, template_name='mezawiki/wiki_page_detail.html'):
+    '''
+    Redirects to the default wiki index name.
+    '''
+    return HttpResponseRedirect(
+        reverse('wiki_page_detail', args=[settings.WIKI_DEFAULT_INDEX])
+    )
+
+
 def wiki_page_list(request, tag=None, username=None,
                    category=None, template="mezawiki/wiki_page_list.html"):
     """
