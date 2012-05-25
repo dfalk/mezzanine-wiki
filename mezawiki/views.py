@@ -7,6 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django import VERSION
 from django.utils.translation import ugettext as _
 
@@ -123,6 +124,7 @@ def wiki_page_detail(request, slug, year=None, month=None,
     return render(request, templates, context)
 
 
+@login_required
 def wiki_page_edit(request, slug, 
                      template="mezawiki/wiki_page_edit.html"):
     """
