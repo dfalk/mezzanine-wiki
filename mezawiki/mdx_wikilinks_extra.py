@@ -41,11 +41,12 @@ class WikiLinkExtraExtension(markdown.Extension):
         
     def extendMarkdown(self, md, md_globals):
         self.md = md
-    
-        # append to end of inline patterns
+
+        # Pattern for wikilinks extended format [[link|label]]
         WIKILINK_RE = r'\[\[([\w0-9_ -]+)(\|([\w0-9_ - ]+))?\]\]'
         wikilinkPattern = WikiLinksExtra(WIKILINK_RE, self.getConfigs())
         wikilinkPattern.md = md
+        # append to end of inline patterns
         md.inlinePatterns.add('wikilink', wikilinkPattern, "<not_strong")
 
 
