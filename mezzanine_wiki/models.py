@@ -6,7 +6,7 @@ from mezzanine.conf import settings
 from mezzanine.core.fields import FileField
 from mezzanine.core.models import Displayable, Ownable, RichText, Slugged
 from mezzanine.generic.fields import CommentsField, RatingField
-from mezawiki.fields import WikiTextField
+from mezzanine_wiki.fields import WikiTextField
 
 
 class WikiText(models.Model):

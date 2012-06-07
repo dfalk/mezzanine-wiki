@@ -1,5 +1,5 @@
 from django import forms
-from mezawiki.models import WikiPage
+from mezzanine_wiki.models import WikiPage
 
 
 class PlainWidget(forms.Textarea):

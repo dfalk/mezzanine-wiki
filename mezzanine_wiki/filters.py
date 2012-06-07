@@ -1,5 +1,5 @@
 from markdown import markdown
-from mezawiki.mdx_wikilinks_extra import WikiLinkExtraExtension
+from mezzanine_wiki.mdx_wikilinks_extra import WikiLinkExtraExtension
 
 
 def md_plain(content):

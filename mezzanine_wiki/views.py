@@ -11,12 +11,12 @@ from django.contrib.auth.decorators import login_required
 from django import VERSION
 from django.utils.translation import ugettext as _
 
-from mezawiki.models import WikiPage, WikiCategory
+from mezzanine_wiki.models import WikiPage, WikiCategory
 #from mezzanine.blog.feeds import PostsRSS, PostsAtom
 from mezzanine.conf import settings
 from mezzanine.generic.models import AssignedKeyword, Keyword
 from mezzanine.utils.views import render, paginate
-from mezawiki.forms import WikiPageForm
+from mezzanine_wiki.forms import WikiPageForm
 
 
 def wiki_index(request, template_name='mezawiki/wiki_page_detail.html'):

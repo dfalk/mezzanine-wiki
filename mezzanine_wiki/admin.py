@@ -3,7 +3,7 @@ from copy import deepcopy
 
 from django.contrib import admin
 
-from mezawiki.models import WikiPage, WikiCategory
+from mezzanine_wiki.models import WikiPage, WikiCategory
 from mezzanine.conf import settings
 from mezzanine.core.admin import DisplayableAdmin, OwnableAdmin
 

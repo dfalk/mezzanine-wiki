@@ -4,7 +4,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.db.models import Count
 
-from mezawiki.models import WikiPage, WikiCategory
+from mezzanine_wiki.models import WikiPage, WikiCategory
 from mezzanine import template
 from mezzanine.conf import settings
 from mezzanine.utils.importing import import_dotted_path
