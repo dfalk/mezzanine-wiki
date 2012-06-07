@@ -7,12 +7,12 @@ from setuptools import setup, find_packages
 from mezzanine import __version__ as version
 
 install_requires = [
-    "mezzanine >= 1.0.8",
+    "mezzanine >= 1.1.2",
 ]
 
 try:
     setup(
-        name="MezaWiki",
+        name="mezzanine-wiki",
         version=version,
         author="Dmitry Falk",
         author_email="dfalk5@gmail.com",
