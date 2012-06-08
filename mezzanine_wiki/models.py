@@ -7,6 +7,24 @@ from mezzanine.core.fields import FileField
 from mezzanine.core.models import Displayable, Ownable, RichText, Slugged
 from mezzanine.generic.fields import CommentsField, RatingField
 from mezzanine_wiki.fields import WikiTextField
+from mezzanine.utils.timezone import now
+
+
+class TimeStamped(models.Model):
+    """
+    Time stamped abstract model.
+    """
+
+    date_created = models.DateTimeField(_('Created'),
+                                        default=now)
+    date_modified = models.DateTimeField(_('Modified'))
+
+    def save(self):
+        self.date_modified = now()
+        super(TimeStamped, self).save()
+
+    class Meta:
+        abstract = True
 
 
 class WikiText(models.Model):
@@ -23,7 +41,7 @@ class WikiText(models.Model):
         abstract = True
 
 
-class WikiPage(Displayable, Ownable, WikiText):
+class WikiPage(Displayable, Ownable, WikiText, TimeStamped):
     """
     A wiki page.
     """
@@ -48,6 +66,26 @@ class WikiPage(Displayable, Ownable, WikiText):
         url_name = "wiki_page_detail"
         kwargs = {"slug": self.slug}
         return (url_name, (), kwargs)
+
+
+class WikiPageRevision(Ownable, WikiText, TimeStamped):
+    """
+    A wiki page revision.
+    """
+
+    page = models.ForeignKey("WikiPage", verbose_name=_("Wiki page"))
+
+    class Meta:
+        verbose_name = _("Wiki page revision")
+        verbose_name_plural = _("Wiki page revisions")
+        ordering = ("-date_created",)
+
+    @models.permalink
+    def get_absolute_url(self):
+        url_name = "wiki_page_revision"
+        kwargs = {"slug": self.page.slug, "rev_id": self.id}
+        return (url_name, (), kwargs)
+
 
 
 class WikiCategory(Slugged):

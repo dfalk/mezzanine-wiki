@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-08 12:47+0400\n"
+"POT-Creation-Date: 2012-06-08 16:48+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,49 +46,71 @@ msgid "Could not import the value of settings.WIKI_TEXT_WIDGET_CLASS: %s"
 msgstr ""
 
 #: models.py:18
+#, fuzzy
+msgid "Created"
+msgstr "Создание"
+
+#: models.py:20
+msgid "Modified"
+msgstr ""
+
+#: models.py:36
 msgid "Content"
 msgstr "Содержимое"
 
-#: models.py:32 templates/mezawiki/wiki_page_detail.html:38
+#: models.py:50 templates/mezawiki/wiki_page_detail.html:38
 #: templates/mezawiki/wiki_page_edit.html:63
+#: templates/mezawiki/wiki_page_revision.html:42
 #: templates/mezawiki/includes/filter_panel.html:24
 msgid "Categories"
 msgstr "Категории"
 
-#: models.py:34
+#: models.py:52
 msgid "Allow comments"
 msgstr "Разрешить комментарии"
 
-#: models.py:36
+#: models.py:54
 msgid "Comments"
 msgstr "Комментарии"
 
-#: models.py:37
+#: models.py:55
 msgid "Rating"
 msgstr "Рейтинг"
 
-#: models.py:38
+#: models.py:56
 msgid "Featured Image"
 msgstr "Главное изображение"
 
-#: models.py:42
+#: models.py:60 models.py:76
 msgid "Wiki page"
 msgstr "Вики-страница"
 
-#: models.py:43
+#: models.py:61
 msgid "Wiki pages"
 msgstr "Вики-страницы"
 
-#: models.py:59
+#: models.py:79
+#, fuzzy
+msgid "Wiki page revision"
+msgstr "Вики-страницы"
+
+#: models.py:80
+#, fuzzy
+msgid "Wiki page revisions"
+msgstr "Вики-страницы"
+
+#: models.py:97
 msgid "Wiki Category"
 msgstr "Вики категория"
 
-#: models.py:60
+#: models.py:98
 msgid "Wiki Categories"
 msgstr "Вики категории"
 
 #: templates/mezawiki/wiki_page_detail.html:21
 #: templates/mezawiki/wiki_page_edit.html:31
+#: templates/mezawiki/wiki_page_history.html:28
+#: templates/mezawiki/wiki_page_revision.html:21
 msgid "Home"
 msgstr "Главная"
 
@@ -96,8 +118,13 @@ msgstr "Главная"
 msgid "Edit page"
 msgstr "Редактировать страницу"
 
+#: templates/mezawiki/wiki_page_detail.html:33
+msgid "View history"
+msgstr "Смотреть историю"
+
 #: templates/mezawiki/wiki_page_detail.html:55
 #: templates/mezawiki/wiki_page_edit.html:84
+#: templates/mezawiki/wiki_page_revision.html:59
 #: templates/mezawiki/includes/filter_panel.html:35
 msgid "Tags"
 msgstr "Теги"
@@ -118,11 +145,18 @@ msgstr "Создание"
 msgid "Save"
 msgstr "Сохранить"
 
+#: templates/mezawiki/wiki_page_history.html:4
+#: templates/mezawiki/wiki_page_history.html:22
 #: templates/mezawiki/wiki_page_list.html:4
 #: templates/mezawiki/wiki_page_list.html:22
 #: templates/mezawiki/includes/filter_panel.html:3
 msgid "Wiki"
 msgstr "Вики"
+
+#: templates/mezawiki/wiki_page_history.html:39
+#: templates/mezawiki/wiki_page_history.html:44
+msgid "Viewing history"
+msgstr "Просмотр истории"
 
 #: templates/mezawiki/wiki_page_list.html:31
 msgid "Tag:"
@@ -136,46 +170,37 @@ msgstr "Категория:"
 msgid "Author:"
 msgstr "Автор:"
 
-#: templates/mezawiki/wiki_page_list.html:49
+#: templates/mezawiki/wiki_page_list.html:42
+#: templates/mezawiki/includes/filter_panel.html:8
+msgid "Page list"
+msgstr "Список страниц"
+
+#: templates/mezawiki/wiki_page_list.html:51
 msgid "Viewing pages tagged"
 msgstr "Просмотр страниц по тегу"
 
-#: templates/mezawiki/wiki_page_list.html:51
+#: templates/mezawiki/wiki_page_list.html:53
 msgid "Viewing pages for the category"
 msgstr "Просмотр страниц из категории"
 
-#: templates/mezawiki/wiki_page_list.html:53
+#: templates/mezawiki/wiki_page_list.html:55
 msgid "Viewing pages from"
 msgstr "Просмотр страниц за"
 
-#: templates/mezawiki/wiki_page_list.html:56
+#: templates/mezawiki/wiki_page_list.html:58
 msgid "Viewing pages by"
 msgstr "Просмотр страниц автора"
 
-#: templates/mezawiki/wiki_page_list.html:74
-msgid "Posted by"
-msgstr "автор"
-
-#: templates/mezawiki/wiki_page_list.html:79
-msgid "in"
-msgstr "в"
-
-#: templates/mezawiki/wiki_page_list.html:84
-msgid "ago"
-msgstr "назад"
+#: templates/mezawiki/wiki_page_revision.html:32
+#: templates/mezawiki/wiki_page_revision.html:37
+msgid "Viewing revision"
+msgstr "Просмотр версии"
 
 #: templates/mezawiki/includes/filter_panel.html:6
 msgid "Main page"
 msgstr "Заглавная страница"
 
-#: templates/mezawiki/includes/filter_panel.html:8
-msgid "Page list"
-msgstr "Список страниц"
-
 #: templates/mezawiki/includes/filter_panel.html:13
 msgid "Recent Pages"
 msgstr "Последние страницы"
 
-#: templates/mezawiki/includes/filter_panel.html:49
-msgid "Authors"
-msgstr "Авторы"

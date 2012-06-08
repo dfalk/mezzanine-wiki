@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django import VERSION
 from django.utils.translation import ugettext as _
 
-from mezzanine_wiki.models import WikiPage, WikiCategory
+from mezzanine_wiki.models import WikiPage, WikiCategory, WikiPageRevision
 #from mezzanine.blog.feeds import PostsRSS, PostsAtom
 from mezzanine.conf import settings
 from mezzanine.generic.models import AssignedKeyword, Keyword
@@ -73,9 +73,9 @@ def wiki_page_list(request, tag=None, username=None,
         if wiki_pages:
             ids = ",".join([str(p.id) for p in wiki_pages])
             for cat in WikiCategory.objects.raw(
-                "SELECT * FROM mezawiki_wikicategory "
-                "JOIN mezawiki_wikipage_categories "
-                "ON mezawiki_wikicategory.id = wikicategory_id "
+                "SELECT * FROM mezzanine_wiki_wikicategory "
+                "JOIN mezzanine_wiki_wikipage_categories "
+                "ON mezzanine_wiki_wikicategory.id = wikicategory_id "
                 "WHERE wikipage_id IN (%s)" % ids):
                 categories[cat.wikipage_id].append(cat)
         keywords = defaultdict(list)
@@ -131,6 +131,60 @@ def wiki_page_detail(request, slug, year=None, month=None,
     return render(request, templates, context)
 
 
+def wiki_page_history(request, slug,
+                     template="mezawiki/wiki_page_history.html"):
+    """
+    Displays a wiki page history.
+    Redirects to the edit view if the page doesn't exist.
+
+    Custom templates are checked for using the name
+    ``mezawiki/wiki_page_detail_XXX.html``
+    where ``XXX`` is the wiki pages's slug.
+    """
+    slug_original = slug
+    slug = urlize_title(slug)
+    if slug != slug_original:
+        return HttpResponseRedirect(
+            reverse('wiki_page_history', args=[slug])
+        )
+    try:
+        wiki_pages = WikiPage.objects.published(for_user=request.user)
+        wiki_page = wiki_pages.get(slug=slug)
+        revisions = WikiPageRevision.objects.filter(page=wiki_page)
+    except WikiPage.DoesNotExist:
+        return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
+    context = {"wiki_page": wiki_page, "revisions": revisions}
+    templates = [u"mezawiki/wiki_page_history_%s.html" % unicode(slug), template]
+    return render(request, templates, context)
+
+
+def wiki_page_revision(request, slug, rev_id,
+                     template="mezawiki/wiki_page_revision.html"):
+    """
+    Displays a wiki page revision.
+    Redirects to the edit view if the page doesn't exist.
+
+    Custom templates are checked for using the name
+    ``mezawiki/wiki_page_detail_XXX.html``
+    where ``XXX`` is the wiki pages's slug.
+    """
+    slug_original = slug
+    slug = urlize_title(slug)
+    if slug != slug_original:
+        return HttpResponseRedirect(
+            reverse('wiki_page_revision', args=[slug])
+        )
+    try:
+        wiki_pages = WikiPage.objects.published(for_user=request.user)
+        wiki_page = wiki_pages.get(slug=slug)
+        revision = WikiPageRevision.objects.get(id=rev_id)
+    except WikiPage.DoesNotExist:
+        return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
+    context = {"wiki_page": wiki_page, "revision": revision}
+    templates = [u"mezawiki/wiki_page_detail_%s.html" % unicode(slug), template]
+    return render(request, templates, context)
+
+
 @login_required
 def wiki_page_edit(request, slug, 
                      template="mezawiki/wiki_page_edit.html"):
@@ -158,6 +212,11 @@ def wiki_page_edit(request, slug,
             page.user = request.user
             page.title = deurlize_title(slug)
             page.save()
+            revision = WikiPageRevision()
+            revision.content = page.content
+            revision.page = page
+            revision.user = request.user
+            revision.save()
             return HttpResponseRedirect(
                 reverse('wiki_page_detail', args=[slug]))
     else:
