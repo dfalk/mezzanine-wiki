@@ -41,7 +41,7 @@ class WikiPage(Displayable, Ownable, WikiText):
     class Meta:
         verbose_name = _("Wiki page")
         verbose_name_plural = _("Wiki pages")
-        ordering = ("-publish_date",)
+        ordering = ("title",)
 
     @models.permalink
     def get_absolute_url(self):

@@ -38,6 +38,8 @@
 {% endif %}{% endif %}{% endif %}{% endif %}
 {% endspaceless %}
 </li>
+{% else %}
+<li>{% trans "Page list" %}</li>
 {% endif %}
 {% endblock %}
 
@@ -65,32 +67,13 @@
     {% endif %}
 {% endif %}
 
+<ul style="unstyled">
 {% for wiki_page in wiki_pages.object_list %}
-{% editable wiki_page.title wiki_page.publish_date %}
-<h2>
+<li>
     <a href="{{ wiki_page.get_absolute_url }}">{{ wiki_page.title }}</a>
-</h2>
-<h6>
-    {% trans "Posted by" %}:
-    {% with wiki_page.user as author %}
-    <a href="{% url wiki_page_list_author author %}">{{ author.get_full_name|default:author.username }}</a>
-    {% endwith %}
-    {% if wiki_page.category_list %}
-    {% trans "in" %}
-    {% for category in wiki_page.category_list %}
-    <a href="{% url wiki_page_list_category category.slug %}">{{ category }}</a>
-    {% endfor %}
-    {% endif %}
-    {{ wiki_page.publish_date|timesince }} {% trans "ago" %}
-</h6>
-{% endeditable %}
-
-{% if wiki_page.featured_image %}
-<img class="featured-thumb" src="{{ MEDIA_URL }}{% thumbnail wiki_page.featured_image 90 90 %}">
-{% endif %}
-
-
+</li>
 {% endfor %}
+</ul>
 
 {% pagination_for wiki_pages %}
 

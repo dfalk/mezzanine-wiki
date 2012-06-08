@@ -54,7 +54,7 @@ def wiki_recent_pages(limit=5):
     """
     Put a list of recently published wiki pages into the template context.
     """
-    return list(WikiPage.objects.published()[:limit])
+    return list(WikiPage.objects.published().order_by('-publish_date')[:limit])
 
 
 @register.filter

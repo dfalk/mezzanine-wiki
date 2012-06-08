@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-08 12:04+0400\n"
+"POT-Creation-Date: 2012-06-08 12:47+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,7 +51,7 @@ msgstr "Содержимое"
 
 #: models.py:32 templates/mezawiki/wiki_page_detail.html:38
 #: templates/mezawiki/wiki_page_edit.html:63
-#: templates/mezawiki/includes/filter_panel.html:16
+#: templates/mezawiki/includes/filter_panel.html:24
 msgid "Categories"
 msgstr "Категории"
 
@@ -98,7 +98,7 @@ msgstr "Редактировать страницу"
 
 #: templates/mezawiki/wiki_page_detail.html:55
 #: templates/mezawiki/wiki_page_edit.html:84
-#: templates/mezawiki/includes/filter_panel.html:27
+#: templates/mezawiki/includes/filter_panel.html:35
 msgid "Tags"
 msgstr "Теги"
 
@@ -120,6 +120,7 @@ msgstr "Сохранить"
 
 #: templates/mezawiki/wiki_page_list.html:4
 #: templates/mezawiki/wiki_page_list.html:22
+#: templates/mezawiki/includes/filter_panel.html:3
 msgid "Wiki"
 msgstr "Вики"
 
@@ -163,10 +164,18 @@ msgstr "в"
 msgid "ago"
 msgstr "назад"
 
-#: templates/mezawiki/includes/filter_panel.html:5
+#: templates/mezawiki/includes/filter_panel.html:6
+msgid "Main page"
+msgstr "Заглавная страница"
+
+#: templates/mezawiki/includes/filter_panel.html:8
+msgid "Page list"
+msgstr "Список страниц"
+
+#: templates/mezawiki/includes/filter_panel.html:13
 msgid "Recent Pages"
 msgstr "Последние страницы"
 
-#: templates/mezawiki/includes/filter_panel.html:41
+#: templates/mezawiki/includes/filter_panel.html:49
 msgid "Authors"
 msgstr "Авторы"

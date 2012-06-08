@@ -115,7 +115,12 @@ def wiki_page_detail(request, slug, year=None, month=None,
     ``mezawiki/wiki_page_detail_XXX.html``
     where ``XXX`` is the wiki pages's slug.
     """
+    slug_original = slug
     slug = urlize_title(slug)
+    if slug != slug_original:
+        return HttpResponseRedirect(
+            reverse('wiki_page_detail', args=[slug])
+        )
     try:
         wiki_pages = WikiPage.objects.published(for_user=request.user)
         wiki_page = wiki_pages.get(slug=slug)
