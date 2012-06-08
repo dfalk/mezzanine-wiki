@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-05-25 15:55+0400\n"
+"POT-Creation-Date: 2012-06-08 12:04+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -49,7 +49,9 @@ msgstr ""
 msgid "Content"
 msgstr "Содержимое"
 
-#: models.py:32 templates/mezawiki/includes/filter_panel.html:16
+#: models.py:32 templates/mezawiki/wiki_page_detail.html:38
+#: templates/mezawiki/wiki_page_edit.html:63
+#: templates/mezawiki/includes/filter_panel.html:16
 msgid "Categories"
 msgstr "Категории"
 
@@ -85,45 +87,34 @@ msgstr "Вики категория"
 msgid "Wiki Categories"
 msgstr "Вики категории"
 
-#: views.py:142
-#, python-format
-msgid "Describe your new page %s here..."
-msgstr "Содержание вашей страницы %s будет здесь..."
-
 #: templates/mezawiki/wiki_page_detail.html:21
-#: templates/mezawiki/wiki_page_edit.html:21
+#: templates/mezawiki/wiki_page_edit.html:31
 msgid "Home"
 msgstr "Главная"
 
-#: templates/mezawiki/wiki_page_detail.html:34
-#: templates/mezawiki/wiki_page_edit.html:35
-#: templates/mezawiki/wiki_page_list.html:74
-msgid "Posted by"
-msgstr "автор"
+#: templates/mezawiki/wiki_page_detail.html:33
+msgid "Edit page"
+msgstr "Редактировать страницу"
 
-#: templates/mezawiki/wiki_page_detail.html:39
-#: templates/mezawiki/wiki_page_edit.html:40
-#: templates/mezawiki/wiki_page_list.html:79
-msgid "in"
-msgstr "в"
-
-#: templates/mezawiki/wiki_page_detail.html:44
-#: templates/mezawiki/wiki_page_edit.html:45
-#: templates/mezawiki/wiki_page_list.html:84
-msgid "ago"
-msgstr "назад"
-
-#: templates/mezawiki/wiki_page_detail.html:59
-#: templates/mezawiki/wiki_page_edit.html:62
+#: templates/mezawiki/wiki_page_detail.html:55
+#: templates/mezawiki/wiki_page_edit.html:84
 #: templates/mezawiki/includes/filter_panel.html:27
 msgid "Tags"
 msgstr "Теги"
 
-#: templates/mezawiki/wiki_page_detail.html:67
-msgid "Edit page"
-msgstr "Редактировать страницу"
-
+#: templates/mezawiki/wiki_page_edit.html:6
+#: templates/mezawiki/wiki_page_edit.html:43
 #: templates/mezawiki/wiki_page_edit.html:55
+msgid "Editing"
+msgstr "Редактирование"
+
+#: templates/mezawiki/wiki_page_edit.html:8
+#: templates/mezawiki/wiki_page_edit.html:49
+#: templates/mezawiki/wiki_page_edit.html:57
+msgid "Creating"
+msgstr "Создание"
+
+#: templates/mezawiki/wiki_page_edit.html:77
 msgid "Save"
 msgstr "Сохранить"
 
@@ -159,6 +150,18 @@ msgstr "Просмотр страниц за"
 #: templates/mezawiki/wiki_page_list.html:56
 msgid "Viewing pages by"
 msgstr "Просмотр страниц автора"
+
+#: templates/mezawiki/wiki_page_list.html:74
+msgid "Posted by"
+msgstr "автор"
+
+#: templates/mezawiki/wiki_page_list.html:79
+msgid "in"
+msgstr "в"
+
+#: templates/mezawiki/wiki_page_list.html:84
+msgid "ago"
+msgstr "назад"
 
 #: templates/mezawiki/includes/filter_panel.html:5
 msgid "Recent Pages"

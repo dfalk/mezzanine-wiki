@@ -13,7 +13,7 @@
 {% endmetablock %}{% endblock %}
 
 {% block title %}
-{% editable wiki_page.title %}{{ wiki_page.title }}{% endeditable %}
+{{ wiki_page.title }}
 {% endblock %}
 
 {% block breadcrumb_menu %}
@@ -30,27 +30,23 @@
 
 {% block main %}
 
+[<a href="{% url wiki_page_edit wiki_page.slug %}">{% trans "Edit page" %}</a>]
+
+
 <h6>
-    {% trans "Posted by" %}:
-    {% with wiki_page.user as author %}
-    <a href="{% url wiki_page_list_author author %}">{{ author.get_full_name|default:author.username }}</a>
-    {% endwith %}
     {% if wiki_page.categories.all.count > 0 %}
-    {% trans "in" %}
+    {% trans "Categories" %}:
     {% for category in wiki_page.categories.all %}
     <a href="{% url wiki_page_list_category category.slug %}">{{ category }}</a>
     {% endfor %}
     {% endif %}
-    {{ wiki_page.publish_date|timesince }} {% trans "ago" %}
 </h6>
 
 {% if wiki_page.featured_image %}
 <p><img src="{{ MEDIA_URL }}{% thumbnail wiki_page.featured_image 600 0 %}"></p>
 {% endif %}
 
-{% editable wiki_page.content %}
 {{ wiki_page.content|wikitext_filter|safe }}
-{% endeditable %}
 
 {% keywords_for wiki_page as tags %}
 {% if tags %}
@@ -63,7 +59,5 @@
 </ul>
 {% endspaceless %}
 {% endif %}
-
-<a href="{% url wiki_page_edit wiki_page.slug %}" class="btn">{% trans "Edit page" %}</a>
 
 {% endblock %}

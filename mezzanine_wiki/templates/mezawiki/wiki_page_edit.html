@@ -1,7 +1,13 @@
 {% extends "mezawiki/wiki_page_list.html" %}
 {% load mezzanine_tags mezawiki_tags comment_tags keyword_tags rating_tags i18n %}
 
-{% block meta_title %}{{ wiki_page.title }}{% endblock %}
+{% block meta_title %}
+{% if not wiki_page.is_initial %}
+{% trans "Editing" %}:
+{% else %}
+{% trans "Creating" %}:
+{% endif %}
+{{ title }}{% endblock %}
 
 {% block meta_keywords %}{% metablock %}
 {% keywords_for wiki_page as tags %}
@@ -13,7 +19,11 @@
 {% endmetablock %}{% endblock %}
 
 {% block title %}
-{% editable wiki_page.title %}{{ wiki_page.title }}{% endeditable %}
+{% if not wiki_page.is_initial %}
+{{ wiki_page.title }}
+{% else %}
+{{ title }}
+{% endif %}
 {% endblock %}
 
 {% block breadcrumb_menu %}
@@ -25,24 +35,36 @@
     <a href="{% url wiki_page_list %}">{{ page.richtextpage.title }}</a>
     <span class="divider">/</span>
 </li>
-<li class="active">{{ wiki_page.title }}</li>
+{% if not wiki_page.is_initial %}
+<li>
+    <a href="{{ wiki_page.get_absolute_url }}">{{ wiki_page.title }}</a>
+    <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Editing" %}</li>
+{% else %}
+<li>
+    {{ title }}
+    <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Creating" %}</li>
+{% endif %}
 {% endblock %}
 
 {% block main %}
+{% if not wiki_page.is_initial %}
+[{% trans "Editing" %}]
+{% else %}
+[{% trans "Creating" %}]
+{% endif %}
 
 {% if not wiki_page.is_initial %}
 <h6>
-    {% trans "Posted by" %}:
-    {% with wiki_page.user as author %}
-    <a href="{% url wiki_page_list_author author %}">{{ author.get_full_name|default:author.username }}</a>
-    {% endwith %}
     {% if wiki_page.categories.all.count > 0 %}
-    {% trans "in" %}
+    {% trans "Categories" %}:
     {% for category in wiki_page.categories.all %}
     <a href="{% url wiki_page_list_category category.slug %}">{{ category }}</a>
     {% endfor %}
     {% endif %}
-    {{ wiki_page.publish_date|timesince }} {% trans "ago" %}
 </h6>
 {% endif %}
 

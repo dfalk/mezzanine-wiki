@@ -17,6 +17,7 @@ from mezzanine.conf import settings
 from mezzanine.generic.models import AssignedKeyword, Keyword
 from mezzanine.utils.views import render, paginate
 from mezzanine_wiki.forms import WikiPageForm
+from mezzanine_wiki.utils import urlize_title, deurlize_title
 
 
 def wiki_index(request, template_name='mezawiki/wiki_page_detail.html'):
@@ -114,6 +115,7 @@ def wiki_page_detail(request, slug, year=None, month=None,
     ``mezawiki/wiki_page_detail_XXX.html``
     where ``XXX`` is the wiki pages's slug.
     """
+    slug = urlize_title(slug)
     try:
         wiki_pages = WikiPage.objects.published(for_user=request.user)
         wiki_page = wiki_pages.get(slug=slug)
@@ -141,7 +143,7 @@ def wiki_page_edit(request, slug,
     except WikiPage.DoesNotExist:
         wiki_page = WikiPage(slug=slug)
         wiki_page.is_initial = True
-        initial = {'content': _('Describe your new page %s here...' % slug)}
+        initial = {}#'content': _('Describe your new page %s here...' % slug)}
                    #'message': _('Initial revision')}
 
     if request.method == 'POST':
@@ -149,14 +151,15 @@ def wiki_page_edit(request, slug,
         if form.is_valid():
             page = form.save(commit=False)
             page.user = request.user
-            page.title = slug
+            page.title = deurlize_title(slug)
             page.save()
             return HttpResponseRedirect(
                 reverse('wiki_page_detail', args=[slug]))
     else:
         form = WikiPageForm(initial=initial, instance=wiki_page)
 
-    context = {"wiki_page": wiki_page, 'form': form}
+    context = {'wiki_page': wiki_page, 'form': form,
+               'title': deurlize_title(slug)}
     templates = [u"mezawiki/wiki_page_edit_%s.html" % unicode(slug), template]
     return render(request, templates, context)
 
