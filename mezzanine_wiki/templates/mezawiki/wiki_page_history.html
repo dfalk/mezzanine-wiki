@@ -41,7 +41,7 @@
 
 {% block main %}
 
-[{% trans "Viewing history" %}]
+[<a href="{{ wiki_page.get_absolute_url }}">{% trans "View Page" %}</a>]
 
 <ul style="unstyled">
 {% for revision in revisions %}

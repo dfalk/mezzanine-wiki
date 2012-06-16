@@ -52,7 +52,7 @@
 
 {% block main %}
 {% if not wiki_page.is_initial %}
-[{% trans "Editing" %}]
+[<a href="{{ wiki_page.get_absolute_url }}">{% trans "View Page" %}</a>]
 {% else %}
 [{% trans "Creating" %}]
 {% endif %}

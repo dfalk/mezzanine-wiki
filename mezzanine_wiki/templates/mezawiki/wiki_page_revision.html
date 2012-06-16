@@ -34,8 +34,7 @@
 
 {% block main %}
 
-[{% trans "Viewing revision" %}]
-
+[<a href="{{ wiki_page.get_absolute_url }}">{% trans "View Page" %}</a>]
 
 <h6>
     {% if wiki_page.categories.all.count > 0 %}
