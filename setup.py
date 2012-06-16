@@ -4,7 +4,7 @@ import os
 
 from setuptools import setup, find_packages
 
-from mezzanine import __version__ as version
+from mezzanine_wiki import __version__ as version
 
 install_requires = [
     "mezzanine >= 1.1.2",
