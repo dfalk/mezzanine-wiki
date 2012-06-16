@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-08 16:48+0400\n"
+"POT-Creation-Date: 2012-06-16 13:02+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,13 +46,12 @@ msgid "Could not import the value of settings.WIKI_TEXT_WIDGET_CLASS: %s"
 msgstr ""
 
 #: models.py:18
-#, fuzzy
 msgid "Created"
-msgstr "Создание"
+msgstr "Создано"
 
 #: models.py:20
 msgid "Modified"
-msgstr ""
+msgstr "Изменено"
 
 #: models.py:36
 msgid "Content"
@@ -60,7 +59,7 @@ msgstr "Содержимое"
 
 #: models.py:50 templates/mezawiki/wiki_page_detail.html:38
 #: templates/mezawiki/wiki_page_edit.html:63
-#: templates/mezawiki/wiki_page_revision.html:42
+#: templates/mezawiki/wiki_page_revision.html:41
 #: templates/mezawiki/includes/filter_panel.html:24
 msgid "Categories"
 msgstr "Категории"
@@ -90,14 +89,12 @@ msgid "Wiki pages"
 msgstr "Вики-страницы"
 
 #: models.py:79
-#, fuzzy
 msgid "Wiki page revision"
-msgstr "Вики-страницы"
+msgstr "Вики правка"
 
 #: models.py:80
-#, fuzzy
 msgid "Wiki page revisions"
-msgstr "Вики-страницы"
+msgstr "Вики правки"
 
 #: models.py:97
 msgid "Wiki Category"
@@ -124,14 +121,13 @@ msgstr "Смотреть историю"
 
 #: templates/mezawiki/wiki_page_detail.html:55
 #: templates/mezawiki/wiki_page_edit.html:84
-#: templates/mezawiki/wiki_page_revision.html:59
+#: templates/mezawiki/wiki_page_revision.html:58
 #: templates/mezawiki/includes/filter_panel.html:35
 msgid "Tags"
 msgstr "Теги"
 
 #: templates/mezawiki/wiki_page_edit.html:6
 #: templates/mezawiki/wiki_page_edit.html:43
-#: templates/mezawiki/wiki_page_edit.html:55
 msgid "Editing"
 msgstr "Редактирование"
 
@@ -140,6 +136,12 @@ msgstr "Редактирование"
 #: templates/mezawiki/wiki_page_edit.html:57
 msgid "Creating"
 msgstr "Создание"
+
+#: templates/mezawiki/wiki_page_edit.html:55
+#: templates/mezawiki/wiki_page_history.html:44
+#: templates/mezawiki/wiki_page_revision.html:37
+msgid "View Page"
+msgstr "Просмотр страницы"
 
 #: templates/mezawiki/wiki_page_edit.html:77
 msgid "Save"
@@ -154,7 +156,6 @@ msgid "Wiki"
 msgstr "Вики"
 
 #: templates/mezawiki/wiki_page_history.html:39
-#: templates/mezawiki/wiki_page_history.html:44
 msgid "Viewing history"
 msgstr "Просмотр истории"
 
@@ -192,9 +193,8 @@ msgid "Viewing pages by"
 msgstr "Просмотр страниц автора"
 
 #: templates/mezawiki/wiki_page_revision.html:32
-#: templates/mezawiki/wiki_page_revision.html:37
 msgid "Viewing revision"
-msgstr "Просмотр версии"
+msgstr "Просмотр правки"
 
 #: templates/mezawiki/includes/filter_panel.html:6
 msgid "Main page"
@@ -203,4 +203,3 @@ msgstr "Заглавная страница"
 #: templates/mezawiki/includes/filter_panel.html:13
 msgid "Recent Pages"
 msgstr "Последние страницы"
-
