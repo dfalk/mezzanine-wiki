@@ -8,6 +8,7 @@ from mezzanine import __version__ as version
 
 install_requires = [
     "mezzanine >= 1.1.2",
+    "markdown",
 ]
 
 try:
