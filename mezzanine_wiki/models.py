@@ -10,6 +10,15 @@ from mezzanine_wiki.fields import WikiTextField
 from mezzanine.utils.timezone import now
 
 
+WIKIPAGE_PERMISSIONS = (
+    ('view_wikipage', 'Can view wikipage'),
+)
+
+WIKIPAGE_REVISION_PERMISSIONS = (
+    ('view_wikipage_revision', 'Can view wikipage revision'),
+)
+
+
 class TimeStamped(models.Model):
     """
     Time stamped abstract model.
@@ -60,6 +69,7 @@ class WikiPage(Displayable, Ownable, WikiText, TimeStamped):
         verbose_name = _("Wiki page")
         verbose_name_plural = _("Wiki pages")
         ordering = ("title",)
+        permissions = WIKIPAGE_PERMISSIONS
 
     @models.permalink
     def get_absolute_url(self):
@@ -79,6 +89,7 @@ class WikiPageRevision(Ownable, WikiText, TimeStamped):
         verbose_name = _("Wiki page revision")
         verbose_name_plural = _("Wiki page revisions")
         ordering = ("-date_created",)
+        permissions = WIKIPAGE_REVISION_PERMISSIONS
 
     @models.permalink
     def get_absolute_url(self):

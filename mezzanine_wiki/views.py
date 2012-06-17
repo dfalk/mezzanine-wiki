@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django import VERSION
 from django.utils.translation import ugettext as _
@@ -126,6 +126,9 @@ def wiki_page_detail(request, slug, year=None, month=None,
         wiki_page = wiki_pages.get(slug=slug)
     except WikiPage.DoesNotExist:
         return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
+    if not request.user.has_perm("mezzanine_wiki.view_wikipage"):
+        return HttpResponseForbidden(
+            _("You don't have permission to view wiki pages."))
     context = {"wiki_page": wiki_page}
     templates = [u"mezawiki/wiki_page_detail_%s.html" % unicode(slug), template]
     return render(request, templates, context)
@@ -180,6 +183,9 @@ def wiki_page_revision(request, slug, rev_id,
         revision = WikiPageRevision.objects.get(id=rev_id)
     except WikiPage.DoesNotExist:
         return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
+    if not request.user.has_perm("mezzanine_wiki.view_wikipage_revision"):
+        return HttpResponseForbidden(
+            _("You don't have permission to view wiki page revisions."))
     context = {"wiki_page": wiki_page, "revision": revision}
     templates = [u"mezawiki/wiki_page_detail_%s.html" % unicode(slug), template]
     return render(request, templates, context)
