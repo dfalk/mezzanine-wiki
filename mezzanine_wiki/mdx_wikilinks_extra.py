@@ -58,8 +58,9 @@ class WikiLinksExtra(markdown.inlinepatterns.Pattern):
     def handleMatch(self, m):
         if m.group(2).strip():
             base_url, end_url, html_class = self._getMeta()
+            slug = m.group(2).strip().capitalize()
             label = m.group(2).strip()
-            url = self.config['build_url'](label, base_url, end_url)
+            url = self.config['build_url'](slug, base_url, end_url)
             a = markdown.util.etree.Element('a')
             if m.group(4):
                 a.text = m.group(4).strip()
