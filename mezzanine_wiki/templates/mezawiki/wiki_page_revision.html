@@ -36,6 +36,16 @@
 
 [<a href="{{ wiki_page.get_absolute_url }}">{% trans "View Page" %}</a>]
 
+<div class="alert">
+<p>{% blocktrans with wiki_page.get_absolute_url as wiki_page_url %}
+The version you are viewing is not the latest one, 
+but represents an older revision of this page, which may 
+have been significantly modified. If it is not what you 
+intended to view, 
+<a href="{{ wiki_page_url }}">proceed to the latest version</a>.
+{% endblocktrans %}</p>
+</div>
+
 <h6>
     {% if wiki_page.categories.all.count > 0 %}
     {% trans "Categories" %}:
