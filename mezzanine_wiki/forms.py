@@ -14,3 +14,8 @@ class WikiPageForm(forms.ModelForm):
     class Meta:
         model = WikiPage
         fields = ('content',)
+
+    def __init__(self, *args, **kwargs):
+        super(WikiPageForm, self).__init__(*args, **kwargs)
+        self.fields['content'].widget.attrs['class'] = 'wiki-textarea'
+
