@@ -79,7 +79,7 @@ def wiki_page_list(request, tag=None, username=None,
                 "WHERE wikipage_id IN (%s)" % ids):
                 categories[cat.wikipage_id].append(cat)
         keywords = defaultdict(list)
-        wikipage_type = ContentType.objects.get(app_label="mezawiki",
+        wikipage_type = ContentType.objects.get(app_label="mezzanine_wiki",
                                                 model="wikipage")
         assigned = AssignedKeyword.objects.filter(wikipage__in=wiki_pages,
                         content_type=wikipage_type).select_related("keyword")
