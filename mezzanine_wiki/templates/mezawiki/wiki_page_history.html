@@ -46,7 +46,7 @@
 <ul style="unstyled">
 {% for revision in revisions %}
 <li>
-    <a href="{{ revision.get_absolute_url }}">{{ revision.date_modified }}</a>
+    <a href="{{ revision.get_absolute_url }}">{{ revision.date_modified }}</a> - {{ revision.user }}
 </li>
 {% endfor %}
 </ul>

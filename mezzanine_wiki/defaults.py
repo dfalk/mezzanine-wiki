@@ -38,3 +38,16 @@ register_setting(
     default="mezzanine_wiki.forms.PlainWidget",
 )
 
+register_setting(
+    name="WIKI_DEFAULT_PRIVACY",
+    description=_("Wiki default privacy"),
+    editable=False,
+    default="registered",
+)
+
+register_setting(
+    name="WIKI_ALLOW_ANONYMOUS_EDITS",
+    description=_("Wiki allow anonymous edits"),
+    editable=False,
+    default=True,
+)

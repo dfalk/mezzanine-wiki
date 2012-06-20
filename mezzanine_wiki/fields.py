@@ -26,3 +26,14 @@ class WikiTextField(models.TextField):
         kwargs["widget"] = widget_class()
         formfield = super(WikiTextField, self).formfield(**kwargs)
         return formfield
+
+
+# South requires custom fields to be given "rules".
+# See http://south.aeracode.org/docs/customfields.html
+if "south" in settings.INSTALLED_APPS:
+    try:
+        from south.modelsinspector import add_introspection_rules
+        add_introspection_rules(rules=[((WikiTextField,), [], {})],
+            patterns=["mezzanine_wiki\.fields\."])
+    except ImportError:
+        pass
