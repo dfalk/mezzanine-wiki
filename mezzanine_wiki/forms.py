@@ -12,12 +12,12 @@ class PlainWidget(forms.Textarea):
 
 
 class WikiPageForm(forms.ModelForm):
-    description = forms.CharField(label=_("Description"),
+    descr = forms.CharField(label=_("Description"),
                                   max_length=400, required=False)
 
     class Meta:
         model = WikiPage
-        fields = ('content', 'privacy',)
+        fields = ('content', 'descr', 'privacy',)
 
     def __init__(self, *args, **kwargs):
         super(WikiPageForm, self).__init__(*args, **kwargs)
@@ -25,12 +25,12 @@ class WikiPageForm(forms.ModelForm):
 
 
 class WikiPagePublicForm(forms.ModelForm):
-    description = forms.CharField(label=_("Description"),
+    descr = forms.CharField(label=_("Description"),
                                   max_length=400, required=False)
 
     class Meta:
         model = WikiPage
-        fields = ('content',)
+        fields = ('content', 'descr',)
 
     def __init__(self, *args, **kwargs):
         super(WikiPagePublicForm, self).__init__(*args, **kwargs)

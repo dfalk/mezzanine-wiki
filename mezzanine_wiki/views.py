@@ -236,7 +236,7 @@ def wiki_page_edit(request, slug,
             if 'content' in form.changed_data:
                 revision = WikiPageRevision()
                 revision.content = page.content
-                revision.description = form.cleaned_data["description"]
+                revision.description = form.cleaned_data["descr"]
                 revision.page = page
                 try:
                     revision.user = request.user
