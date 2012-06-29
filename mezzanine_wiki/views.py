@@ -16,7 +16,7 @@ from mezzanine_wiki.models import WikiPage, WikiCategory, WikiPageRevision
 from mezzanine.conf import settings
 from mezzanine.generic.models import AssignedKeyword, Keyword
 from mezzanine.utils.views import render, paginate
-from mezzanine_wiki.forms import WikiPageForm, WikiPagePublicForm
+from mezzanine_wiki.forms import WikiPageForm, WikiPagePublicForm, WikiPageNewForm
 from mezzanine_wiki.utils import urlize_title, deurlize_title
 
 
@@ -256,5 +256,46 @@ def wiki_page_edit(request, slug,
                'title': deurlize_title(slug)}
     templates = [u"mezawiki/wiki_page_edit_%s.html" % unicode(slug), template]
     return render(request, templates, context)
+
+
+def wiki_page_new(request, template="mezawiki/wiki_page_new.html"):
+    """
+    Displays the form for creating a page.
+    """
+
+    if not request.user.has_perms("add_wikipage"):
+        return HttpResponseForbidden(
+            _("You don't have permission to create wiki page."))
+
+    if request.method == 'POST':
+        form = WikiPageNewForm(request.POST)
+        if form.is_valid():
+            page = form.save(commit=False)
+            try:
+                page.user = request.user
+            except:
+                # anonymous
+                page.user_id = -1
+            page.user = request.user
+            page.slug = urlize_title(form.cleaned_data["title"])
+            # TODO Check slug, it is not a unique field
+            page.save()
+            revision = WikiPageRevision()
+            revision.content = page.content
+            revision.description = form.cleaned_data["description"]
+            revision.page = page
+            try:
+                revision.user = request.user
+            except:
+                # anonymous
+                revision.user_id = -1
+            revision.save()
+            return HttpResponseRedirect(
+                reverse('wiki_page_detail', args=[page.slug]))
+    else:
+        form = WikiPageNewForm()
+
+    context = {'form': form}
+    return render(request, template, context)
 
 

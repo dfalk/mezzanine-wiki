@@ -1,0 +1,32 @@
+{% extends "mezawiki/wiki_page_list.html" %}
+{% load mezzanine_tags mezawiki_tags comment_tags keyword_tags rating_tags i18n %}
+
+{% block meta_title %}
+{% trans "New page" %}
+{% endblock %}
+
+{% block title %}
+{% trans "New page" %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="{% url home %}">{% trans "Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="{% url wiki_index %}">{{ page.richtextpage.title }}</a>
+    <span class="divider">/</span>
+</li>
+<li class="active">{% trans "New page" %}</li>
+{% endblock %}
+
+{% block main %}
+[{% trans "Creating" %}]
+
+<form action="" method="post">{% csrf_token %}
+{{ form.as_p }}
+<input type="submit" value="{% trans 'Save' %}" />
+</form>
+
+{% endblock %}

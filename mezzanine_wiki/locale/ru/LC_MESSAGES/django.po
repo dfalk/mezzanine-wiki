@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-06-20 17:00+0400\n"
+"POT-Creation-Date: 2012-06-29 13:08+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,7 +53,7 @@ msgstr ""
 msgid "Could not import the value of settings.WIKI_TEXT_WIDGET_CLASS: %s"
 msgstr ""
 
-#: forms.py:15 forms.py:28 models.py:126
+#: forms.py:15 forms.py:28 forms.py:41 models.py:126
 msgid "Description"
 msgstr "Описание"
 
@@ -152,9 +152,14 @@ msgstr "У вас нет доступа для просмотра этой пр�
 msgid "You don't have permission to edit this wiki page."
 msgstr "У вас нет доступа для редактирования этой страницы."
 
+#: views.py:268
+msgid "You don't have permission to create wiki page."
+msgstr "У вас нет доступа для создания страниц."
+
 #: templates/mezawiki/wiki_page_detail.html:21
 #: templates/mezawiki/wiki_page_edit.html:31
 #: templates/mezawiki/wiki_page_history.html:28
+#: templates/mezawiki/wiki_page_new.html:14
 #: templates/mezawiki/wiki_page_revision.html:21
 msgid "Home"
 msgstr "Главная"
@@ -182,6 +187,7 @@ msgstr "Редактирование"
 #: templates/mezawiki/wiki_page_edit.html:8
 #: templates/mezawiki/wiki_page_edit.html:49
 #: templates/mezawiki/wiki_page_edit.html:57
+#: templates/mezawiki/wiki_page_new.html:25
 msgid "Creating"
 msgstr "Создание"
 
@@ -192,6 +198,7 @@ msgid "View Page"
 msgstr "Просмотр страницы"
 
 #: templates/mezawiki/wiki_page_edit.html:77
+#: templates/mezawiki/wiki_page_new.html:29
 msgid "Save"
 msgstr "Сохранить"
 
@@ -240,6 +247,12 @@ msgstr "Просмотр страниц за"
 msgid "Viewing pages by"
 msgstr "Просмотр страниц автора"
 
+#: templates/mezawiki/wiki_page_new.html:5
+#: templates/mezawiki/wiki_page_new.html:9
+#: templates/mezawiki/wiki_page_new.html:21
+msgid "New page"
+msgstr "Новая страница"
+
 #: templates/mezawiki/wiki_page_revision.html:32
 msgid "Viewing revision"
 msgstr "Просмотр правки"
@@ -255,9 +268,9 @@ msgid ""
 "<a href=\"%(wiki_page_url)s\">proceed to the latest version</a>.\n"
 msgstr ""
 "\n"
-"Версия страницы, которую вы просматриваете не является актуальной. "
-"Если здесь нет того, что вы ожидаете увидеть, то можете перейти "
-"к <a href=\"%(wiki_page_url)s\">последней версии</a>.\n"
+"Версия страницы, которую вы просматриваете не является актуальной. Если "
+"здесь нет того, что вы ожидаете увидеть, то можете перейти к <a href="
+"\"%(wiki_page_url)s\">последней версии</a>.\n"
 
 #: templates/mezawiki/includes/filter_panel.html:6
 msgid "Main page"

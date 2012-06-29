@@ -36,3 +36,16 @@ class WikiPagePublicForm(forms.ModelForm):
         super(WikiPagePublicForm, self).__init__(*args, **kwargs)
         self.fields['content'].widget.attrs['class'] = 'wiki-textarea'
 
+
+class WikiPageNewForm(forms.ModelForm):
+    description = forms.CharField(label=_("Description"),
+                                  max_length=400, required=False)
+
+    class Meta:
+        model = WikiPage
+        fields = ('title', 'content',)
+
+    def __init__(self, *args, **kwargs):
+        super(WikiPageNewForm, self).__init__(*args, **kwargs)
+        self.fields['content'].widget.attrs['class'] = 'wiki-textarea'
+
