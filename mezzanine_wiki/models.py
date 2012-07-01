@@ -87,7 +87,7 @@ class WikiPage(Displayable, Ownable, TimeStamped):
 
         # TODO: Checks done by guardian for owner and admins.
         #elif 'view_wikipage' in get_perms(user, self):
-        elif user.has_perms('mezzanine_wiki.view_wikipage'):
+        elif user.has_perm('mezzanine_wiki.view_wikipage'):
             return True
 
         # Fallback to closed profile.
