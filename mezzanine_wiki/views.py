@@ -263,7 +263,7 @@ def wiki_page_new(request, template="mezawiki/wiki_page_new.html"):
     Displays the form for creating a page.
     """
 
-    if not request.user.has_perms("add_wikipage"):
+    if not request.user.has_perm("mezzanine_wiki.add_wikipage"):
         return HttpResponseForbidden(
             _("You don't have permission to create wiki page."))
 
