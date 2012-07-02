@@ -6,6 +6,9 @@
     >{% trans "Main page" %}</a></li>
 <li><a href="{% url wiki_page_list %}"
     >{% trans "Page list" %}</a></li>
+<li><a href="{% url wiki_page_changes %}"
+    >{% trans "Recent changes" %}</a></li>
+
 </ul>
 
 {% wiki_recent_pages 5 as recent_pages %}

@@ -1,0 +1,48 @@
+{% extends "mezawiki/wiki_page_list.html" %}
+{% load i18n mezzanine_tags mezawiki_tags keyword_tags disqus_tags %}
+
+{% block meta_title %}{% trans "Recent Changes" %}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+    {% if not forloop.first %}, {% endif %}
+    {{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% trans "Recent Changes" %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="{% url home %}">{% trans "Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="{% url wiki_index %}">{{ page.richtextpage.title }}</a>
+    <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Recent changes" %}</li>
+{% endblock %}
+
+{% block main %}
+
+<ul style="unstyled">
+{% for wikipage in wiki_pages %}
+<li>
+    {{ wikipage.date_modified }} - <a href="{{ wikipage.get_absolute_url }}">{{ wikipage.title }}</a>
+</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
+
+{% block right_panel %}
+{% include "mezawiki/includes/filter_panel.html" %}
+{% endblock %}

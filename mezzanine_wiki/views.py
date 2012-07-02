@@ -198,6 +198,16 @@ def wiki_page_revision(request, slug, rev_id,
     return render(request, templates, context)
 
 
+def wiki_page_changes(request, 
+                     template="mezawiki/wiki_page_changes.html"):
+    """
+    Displays a recent wiki changes.
+    """
+    wiki_pages = WikiPage.objects.published(for_user=request.user).order_by('-date_modified')
+    context = {"wiki_pages": wiki_pages}
+    return render(request, template, context)
+
+
 def wiki_page_edit(request, slug, 
                      template="mezawiki/wiki_page_edit.html"):
     """
