@@ -16,11 +16,7 @@
 {% endmetablock %}{% endblock %}
 
 {% block title %}
-{% if page %}
-{% editable page.title %}{{ page.title }}{% endeditable %}
-{% else %}
-{% trans "Wiki" %}
-{% endif %}
+{% trans "Page list" %}
 {% endblock %}
 
 {% block breadcrumb_menu %}
@@ -59,12 +55,6 @@
         {{ author.get_full_name|default:author.username }}
     {% endif %}{% endif %}{% endif %}{% endif %}
     </p>
-{% else %}
-    {% if page %}
-    {% editable page.richtextpage.content %}
-    {{ page.richtextpage.content|safe }}
-    {% endeditable %}
-    {% endif %}
 {% endif %}
 
 <ul style="unstyled">
