@@ -14,7 +14,7 @@
 
 {% wiki_recent_pages 5 as recent_pages %}
 {% if recent_pages %}
-<h3>{% trans "Recent Pages" %}</h3>
+<h3>{% trans "New pages" %}</h3>
 <ul class="unstyled recent-posts">
 {% for recent_page in recent_pages %}
 <li><a href="{{ recent_page.get_absolute_url }}"
