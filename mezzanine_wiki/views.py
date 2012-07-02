@@ -238,7 +238,7 @@ def wiki_page_edit(request, slug,
         else:
             form = WikiPagePublicForm(request.POST, instance=wiki_page) 
         if form.is_valid():
-            page = form.save()
+            page = form.save(commit=False)
             if wiki_page.is_initial:
                 page.user = request.user
                 page.title = deurlize_title(slug)
