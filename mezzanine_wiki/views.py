@@ -286,7 +286,6 @@ def wiki_page_new(request, template="mezawiki/wiki_page_new.html"):
             except:
                 # anonymous
                 page.user_id = -1
-            page.user = request.user
             page.slug = urlize_title(form.cleaned_data["title"])
             # TODO Check slug, it is not a unique field
             page.save()
