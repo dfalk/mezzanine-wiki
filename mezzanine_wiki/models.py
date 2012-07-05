@@ -8,6 +8,7 @@ from mezzanine.core.fields import FileField
 from mezzanine.core.models import Displayable, Ownable, RichText, Slugged
 from mezzanine.generic.fields import CommentsField, RatingField
 from mezzanine_wiki.fields import WikiTextField
+from mezzanine_wiki import defaults as wiki_settings
 from mezzanine.utils.timezone import now
 
 
@@ -19,10 +20,6 @@ WIKIPAGE_PERMISSIONS = (
 WIKIPAGE_REVISION_PERMISSIONS = (
     ('view_wikipage_revision', 'Can view wikipage revision'),
 )
-
-
-def allow_anonymous_edits():
-        return settings.WIKI_ALLOW_ANONYMOUS_EDITS
 
 
 class TimeStamped(models.Model):
@@ -47,21 +44,10 @@ class WikiPage(Displayable, Ownable, TimeStamped):
     A wiki page.
     """
 
-    PRIVACY_CHOICES = (
-        ('open', _('Open')),
-        ('registered', _('Registered')),
-        ('private', _('Private')),
-        ('closed', _('Closed')),
-    )
-
     content = WikiTextField(_("Content"))
     categories = models.ManyToManyField("WikiCategory",
                                         verbose_name=_("Categories"),
                                         blank=True, related_name="wikipages")
-    privacy = models.CharField(_("Privacy"), max_length=15,
-                   choices=PRIVACY_CHOICES,
-                   default=settings.WIKI_DEFAULT_PRIVACY,
-                   help_text = _("Designates who can view this page."))
     allow_comments = models.BooleanField(verbose_name=_("Allow comments"),
                                          default=True)
     comments = CommentsField(verbose_name=_("Comments"))
@@ -78,35 +64,32 @@ class WikiPage(Displayable, Ownable, TimeStamped):
         permissions = WIKIPAGE_PERMISSIONS
 
     def can_view_wikipage(self, user):
-        # Simple cases first, we don't want to waste CPU and DB hits.
         # Everyone.
-        if self.privacy == 'open': return True
-        # Registered users.
-        elif self.privacy == 'registered' and isinstance(user, User):
-            return True
-
-        # TODO: Checks done by guardian for owner and admins.
-        #elif 'view_wikipage' in get_perms(user, self):
-        elif user.has_perm('mezzanine_wiki.view_wikipage'):
-            return True
-
-        # Fallback to closed profile.
-        return False
+        return True
 
     def can_edit_wikipage(self, user):
         # Simple cases first, we don't want to waste CPU and DB hits.
+
         # Everyone.
-        if self.privacy == 'open' and allow_anonymous_edits(): return True
+        if (settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_OPENED):
+             return True
+
         # Registered users.
-        elif self.privacy == 'registered' and user.is_authenticated():
+        elif (settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_REGISTERED
+                                              ) and (user.is_authenticated()):
             return True
 
         # TODO: Checks done by guardian for owner and admins.
         #elif 'view_wikipage' in get_perms(user, self):
-        elif self.privacy == 'private' and user.has_perm("mezzanine_wiki.change_wikipage"):
+        elif (settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_MODERATED
+                   ) and (user.has_perm('mezzanine_wiki.change_wikipage')):
             return True
 
-        # Fallback to closed profile.
+        # Owner.
+        elif self.user == user:
+            return True
+
+        # Fallback to closed page.
         return False
 
     @models.permalink

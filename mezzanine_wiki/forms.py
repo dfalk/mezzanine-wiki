@@ -17,33 +17,20 @@ class WikiPageForm(forms.ModelForm):
 
     class Meta:
         model = WikiPage
-        fields = ('content', 'descr', 'privacy',)
+        fields = ('status', 'content', 'descr',)
 
     def __init__(self, *args, **kwargs):
         super(WikiPageForm, self).__init__(*args, **kwargs)
         self.fields['content'].widget.attrs['class'] = 'wiki-textarea'
 
 
-class WikiPagePublicForm(forms.ModelForm):
+class WikiPageNewForm(forms.ModelForm):
     descr = forms.CharField(label=_("Description"),
                                   max_length=400, required=False)
 
     class Meta:
         model = WikiPage
-        fields = ('content', 'descr',)
-
-    def __init__(self, *args, **kwargs):
-        super(WikiPagePublicForm, self).__init__(*args, **kwargs)
-        self.fields['content'].widget.attrs['class'] = 'wiki-textarea'
-
-
-class WikiPageNewForm(forms.ModelForm):
-    description = forms.CharField(label=_("Description"),
-                                  max_length=400, required=False)
-
-    class Meta:
-        model = WikiPage
-        fields = ('title', 'content',)
+        fields = ('status', 'title', 'content',)
 
     def __init__(self, *args, **kwargs):
         super(WikiPageNewForm, self).__init__(*args, **kwargs)

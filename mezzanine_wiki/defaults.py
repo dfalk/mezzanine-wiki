@@ -38,16 +38,21 @@ register_setting(
     default="mezzanine_wiki.forms.PlainWidget",
 )
 
-register_setting(
-    name="WIKI_DEFAULT_PRIVACY",
-    description=_("Wiki default privacy"),
-    editable=False,
-    default="registered",
+WIKI_PRIVACY_OPENED = 1
+WIKI_PRIVACY_REGISTERED = 2
+WIKI_PRIVACY_MODERATED = 3
+WIKI_PRIVACY_CLOSED = 4
+WIKI_PRIVACY_CHOICES = (
+    (WIKI_PRIVACY_OPENED, _('Opened')),
+    (WIKI_PRIVACY_REGISTERED, _('Registered')),
+    (WIKI_PRIVACY_MODERATED, _('Moderated')),
+    (WIKI_PRIVACY_CLOSED, _('Closed')),
 )
 
 register_setting(
-    name="WIKI_ALLOW_ANONYMOUS_EDITS",
-    description=_("Wiki allow anonymous edits"),
-    editable=False,
-    default=True,
+    name="WIKI_PRIVACY",
+    description=_("Wiki privacy"),
+    editable=True,
+    choices=WIKI_PRIVACY_CHOICES,
+    default=WIKI_PRIVACY_REGISTERED,
 )

@@ -12,16 +12,12 @@ from django import VERSION
 from django.utils.translation import ugettext as _
 
 from mezzanine_wiki.models import WikiPage, WikiCategory, WikiPageRevision
-#from mezzanine.blog.feeds import PostsRSS, PostsAtom
 from mezzanine.conf import settings
 from mezzanine.generic.models import AssignedKeyword, Keyword
 from mezzanine.utils.views import render, paginate
-from mezzanine_wiki.forms import WikiPageForm, WikiPagePublicForm, WikiPageNewForm
+from mezzanine_wiki.forms import WikiPageForm, WikiPageNewForm
 from mezzanine_wiki.utils import urlize_title, deurlize_title
-
-
-def allow_anonymous_edits():
-        return settings.WIKI_ALLOW_ANONYMOUS_EDITS
+from mezzanine_wiki import defaults as wiki_settings
 
 
 def wiki_index(request, template_name='mezawiki/wiki_page_detail.html'):
@@ -126,6 +122,10 @@ def wiki_page_detail(request, slug, year=None, month=None,
             reverse('wiki_page_detail', args=[slug])
         )
     try:
+        wiki_page_exist = WikiPage.objects.get(slug=slug)
+        if wiki_page_exist.status == 1 and not wiki_page_exist.can_edit_wikipage(request.user):
+            return HttpResponseForbidden(
+                _("You don't have permission to view this wiki page."))
         wiki_pages = WikiPage.objects.published(for_user=request.user)
         wiki_page = wiki_pages.get(slug=slug)
     except WikiPage.DoesNotExist:
@@ -218,8 +218,8 @@ def wiki_page_edit(request, slug,
     where ``XXX`` is the wiki pages's slug.
     """
     try:
-        wiki_pages = WikiPage.objects.published(for_user=request.user)
-        wiki_page = wiki_pages.get(slug=slug)
+        #wiki_pages = WikiPage.objects.published(for_user=request.user)
+        wiki_page = WikiPage.objects.get(slug=slug)
         wiki_page.is_initial = False
         initial = {}
     except WikiPage.DoesNotExist:
@@ -233,16 +233,12 @@ def wiki_page_edit(request, slug,
             _("You don't have permission to edit this wiki page."))
 
     if request.method == 'POST':
-        if request.user.has_perm("mezzanine_wiki.change_wikipage_privacy"):
-            form = WikiPageForm(request.POST, instance=wiki_page)
-        else:
-            form = WikiPagePublicForm(request.POST, instance=wiki_page) 
+        form = WikiPageForm(request.POST, instance=wiki_page)
         if form.is_valid():
             page = form.save(commit=False)
             if wiki_page.is_initial:
                 page.user = request.user
                 page.title = deurlize_title(slug)
-                page.save()
             if 'content' in form.changed_data:
                 revision = WikiPageRevision()
                 revision.content = page.content
@@ -254,13 +250,11 @@ def wiki_page_edit(request, slug,
                     # anonymous
                     revision.user_id = -1
                 revision.save()
+            page.save()
             return HttpResponseRedirect(
                 reverse('wiki_page_detail', args=[slug]))
     else:
-        if request.user.has_perm("mezzanine_wiki.change_wikipage_privacy"):
-            form = WikiPageForm(initial=initial, instance=wiki_page)
-        else:
-            form = WikiPagePublicForm(initial=initial, instance=wiki_page) 
+        form = WikiPageForm(initial=initial, instance=wiki_page)
 
     context = {'wiki_page': wiki_page, 'form': form,
                'title': deurlize_title(slug)}
@@ -268,12 +262,33 @@ def wiki_page_edit(request, slug,
     return render(request, templates, context)
 
 
+def can_add_wikipage(user):
+    # Simple cases first, we don't want to waste CPU and DB hits.
+
+    # Everyone.
+    if (settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_OPENED):
+        return True
+
+    # Registered users.
+    elif (settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_REGISTERED
+                                         ) and (isinstance(user, User)):
+        return True
+
+    # Moderated.
+    elif (settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_MODERATED
+                   ) and (user.has_perm('mezzanine_wiki.add_wikipage')):
+        return True
+
+    # Fallback to closed profile.
+    return False
+
+
 def wiki_page_new(request, template="mezawiki/wiki_page_new.html"):
     """
     Displays the form for creating a page.
     """
 
-    if not request.user.has_perm("mezzanine_wiki.add_wikipage"):
+    if not can_add_wikipage(request.user):
         return HttpResponseForbidden(
             _("You don't have permission to create wiki page."))
 
@@ -291,7 +306,7 @@ def wiki_page_new(request, template="mezawiki/wiki_page_new.html"):
             page.save()
             revision = WikiPageRevision()
             revision.content = page.content
-            revision.description = form.cleaned_data["description"]
+            revision.description = form.cleaned_data["descr"]
             revision.page = page
             try:
                 revision.user = request.user
