@@ -226,8 +226,7 @@ def wiki_page_edit(request, slug,
     except WikiPage.DoesNotExist:
         wiki_page = WikiPage(slug=slug)
         wiki_page.is_initial = True
-        initial = {'status': 1}#'content': _('Describe your new page %s here...' % slug)}
-                   #'message': _('Initial revision')}
+        initial = {'status': 1}
 
     if not wiki_page.can_edit_wikipage(request.user):
         return HttpResponseForbidden(
@@ -283,7 +282,7 @@ def can_add_wikipage(user):
                    ) and (user.has_perm('mezzanine_wiki.add_wikipage')):
         return True
 
-    # Fallback to closed profile.
+    # Fallback to closed page.
     return False
 
 
