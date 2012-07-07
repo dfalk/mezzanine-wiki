@@ -34,9 +34,9 @@
 {% block main %}
 
 <ul style="unstyled">
-{% for wikipage in wiki_pages %}
+{% for wikipage in wiki_revisions%}
 <li>
-    {{ wikipage.date_modified }} - <a href="{{ wikipage.get_absolute_url }}">{{ wikipage.title }}</a>
+    {{ wikipage.date_modified }} - <a href="{{ wikipage.page.get_absolute_url }}">{{ wikipage.page.title }}</a> ({{ wikipage.user }}, {{ wikipage.description }})
 </li>
 {% endfor %}
 </ul>

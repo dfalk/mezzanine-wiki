@@ -204,8 +204,9 @@ def wiki_page_changes(request,
     """
     Displays a recent wiki changes.
     """
-    wiki_pages = WikiPage.objects.published(for_user=request.user).order_by('-date_modified')
-    context = {"wiki_pages": wiki_pages}
+    wiki_pages = WikiPage.objects.published(for_user=request.user)
+    wiki_revisions = WikiPageRevision.objects.filter(page__in=wiki_pages)
+    context = {"wiki_revisions": wiki_revisions}
     return render(request, template, context)
 
 
