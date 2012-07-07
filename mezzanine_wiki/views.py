@@ -238,13 +238,16 @@ def wiki_page_edit(request, slug,
         if form.is_valid():
             page = form.save(commit=False)
             if wiki_page.is_initial:
-                page.user = request.user
+                try:
+                    page.user = request.user
+                except:
+                    page.user_id = -1
                 page.title = deurlize_title(slug)
             page.save()
             if 'content' in form.changed_data:
                 revision = WikiPageRevision()
                 revision.content = page.content
-                revision.description = form.cleaned_data["descr"]
+                revision.description = form.cleaned_data["summary"]
                 revision.page = page
                 try:
                     revision.user = request.user
@@ -307,7 +310,7 @@ def wiki_page_new(request, template="mezawiki/wiki_page_new.html"):
             page.save()
             revision = WikiPageRevision()
             revision.content = page.content
-            revision.description = form.cleaned_data["descr"]
+            revision.description = form.cleaned_data["summary"]
             revision.page = page
             try:
                 revision.user = request.user
