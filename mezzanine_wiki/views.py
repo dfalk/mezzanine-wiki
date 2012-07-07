@@ -240,6 +240,7 @@ def wiki_page_edit(request, slug,
             if wiki_page.is_initial:
                 page.user = request.user
                 page.title = deurlize_title(slug)
+            page.save()
             if 'content' in form.changed_data:
                 revision = WikiPageRevision()
                 revision.content = page.content
@@ -251,7 +252,6 @@ def wiki_page_edit(request, slug,
                     # anonymous
                     revision.user_id = -1
                 revision.save()
-            page.save()
             return HttpResponseRedirect(
                 reverse('wiki_page_detail', args=[slug]))
     else:
