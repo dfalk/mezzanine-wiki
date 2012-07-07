@@ -226,7 +226,7 @@ def wiki_page_edit(request, slug,
     except WikiPage.DoesNotExist:
         wiki_page = WikiPage(slug=slug)
         wiki_page.is_initial = True
-        initial = {}#'content': _('Describe your new page %s here...' % slug)}
+        initial = {'status': 1}#'content': _('Describe your new page %s here...' % slug)}
                    #'message': _('Initial revision')}
 
     if not wiki_page.can_edit_wikipage(request.user):
@@ -321,7 +321,7 @@ def wiki_page_new(request, template="mezawiki/wiki_page_new.html"):
             return HttpResponseRedirect(
                 reverse('wiki_page_detail', args=[page.slug]))
     else:
-        form = WikiPageNewForm()
+        form = WikiPageNewForm(initial={'status': 1})
 
     context = {'form': form}
     return render(request, template, context)
