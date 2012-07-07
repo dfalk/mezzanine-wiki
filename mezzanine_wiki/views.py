@@ -129,10 +129,11 @@ def wiki_page_detail(request, slug, year=None, month=None,
         wiki_pages = WikiPage.objects.published(for_user=request.user)
         wiki_page = wiki_pages.get(slug=slug)
     except WikiPage.DoesNotExist:
-        return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
-    if not wiki_page.can_view_wikipage(request.user):
-        return HttpResponseForbidden(
-            _("You don't have permission to view this wiki page."))
+        if can_add_wikipage(request.user):
+            return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
+        else:
+            return HttpResponseForbidden(
+                _("You don't have permission to add new wiki page."))
     context = {"wiki_page": wiki_page}
     templates = [u"mezawiki/wiki_page_detail_%s.html" % unicode(slug), template]
     return render(request, templates, context)
