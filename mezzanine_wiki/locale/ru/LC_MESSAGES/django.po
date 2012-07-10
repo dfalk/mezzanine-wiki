@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-10 14:10+0400\n"
+"POT-Creation-Date: 2012-07-10 16:27+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,7 +82,7 @@ msgid "Content"
 msgstr "Содержимое"
 
 #: models.py:49 templates/mezawiki/wiki_page_detail.html:38
-#: templates/mezawiki/wiki_page_diff.html:42
+#: templates/mezawiki/wiki_page_diff.html:41
 #: templates/mezawiki/wiki_page_edit.html:63
 #: templates/mezawiki/wiki_page_revision.html:51
 #: templates/mezawiki/includes/filter_panel.html:28
@@ -133,23 +133,43 @@ msgstr "Вики категория"
 msgid "Wiki Categories"
 msgstr "Вики категории"
 
-#: views.py:129 views.py:167
+#: views.py:131 views.py:169
 msgid "You don't have permission to view this wiki page."
 msgstr "У вас нет доступа для просмотра этой страницы."
 
-#: views.py:137
+#: views.py:139
 msgid "You don't have permission to add new wiki page."
 msgstr "У вас нет доступа для создания новых страниц."
 
-#: views.py:197
+#: views.py:199
 msgid "You don't have permission to view this wiki page revision."
 msgstr "У вас нет доступа для просмотра этой правки."
 
-#: views.py:259
+#: views.py:254
+#, python-format
+msgid "Reverted to revision of %(time)s by %(user)s."
+msgstr "Откат правки от %(time)s пользователя %(user)s."
+
+#: views.py:257
+#, python-format
+msgid "Reverted to anonymous revision of %(time)s."
+msgstr "Откат к анонимной правки от %(time)s."
+
+#: views.py:290
+#, python-format
+msgid "Undid revision of %(time)s by %(user)s."
+msgstr "Отмена правки от %(time)s пользователя %(user)s."
+
+#: views.py:293
+#, python-format
+msgid "Undid anonymous revision of %(time)s."
+msgstr "Отмена анонимной правки от %(time)s. "
+
+#: views.py:350
 msgid "You don't have permission to edit this wiki page."
 msgstr "У вас нет доступа для редактирования этой страницы."
 
-#: views.py:322
+#: views.py:413
 msgid "You don't have permission to create wiki page."
 msgstr "У вас нет доступа для создания страниц."
 
@@ -181,14 +201,29 @@ msgid "View history"
 msgstr "Просмотр истории"
 
 #: templates/mezawiki/wiki_page_detail.html:55
-#: templates/mezawiki/wiki_page_diff.html:64
+#: templates/mezawiki/wiki_page_diff.html:75
 #: templates/mezawiki/wiki_page_edit.html:84
 #: templates/mezawiki/wiki_page_revision.html:68
 #: templates/mezawiki/includes/filter_panel.html:39
 msgid "Tags"
 msgstr "Теги"
 
-#: templates/mezawiki/wiki_page_diff.html:53
+#: templates/mezawiki/wiki_page_diff.html:54
+msgid ""
+"\n"
+"It was impossible to automatically undo the change \n"
+"you have selected. Perhaps the page has been modified too much in the \n"
+"meantime. Review the following content comparison, which represents the \n"
+"change you tried to undo, and apply the changes manually to the latest \n"
+"revision.\n"
+msgstr ""
+"\n"
+"Нет возможности сделать автоматическую отмену изменений. \n"
+"Скорее всего страница была изменена слишком сильно. \n"
+"Просмотрите изменения, которые вы хотите отменить, и примените их вручную \n"
+"к последней правке.\n"
+
+#: templates/mezawiki/wiki_page_diff.html:64
 #, python-format
 msgid ""
 "\n"
@@ -232,9 +267,17 @@ msgid "Viewing history"
 msgstr "Просмотр истории"
 
 #: templates/mezawiki/wiki_page_history.html:48
-#: templates/mezawiki/wiki_page_history.html:60
+#: templates/mezawiki/wiki_page_history.html:62
 msgid "Compare"
 msgstr "Сравнить"
+
+#: templates/mezawiki/wiki_page_history.html:56
+msgid "revert"
+msgstr "откатить"
+
+#: templates/mezawiki/wiki_page_history.html:57
+msgid "undo"
+msgstr "отменить"
 
 #: templates/mezawiki/wiki_page_list.html:19
 #: templates/mezawiki/wiki_page_list.html:38
