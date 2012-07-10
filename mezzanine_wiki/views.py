@@ -224,6 +224,42 @@ def wiki_page_diff(request, slug,
                   {'wiki_page': wiki_page, 'from_revision': from_rev, 'to_revision': to_rev, 'diff': diff})
 
 
+def wiki_page_revert(request, slug, revision_pk):
+    slug_original = slug
+    slug = urlize_title(slug)
+    if slug != slug_original:
+        return HttpResponseRedirect(
+            reverse('wiki_page_revert', args=[slug, revision_pk])
+        )
+    try:
+        wiki_pages = WikiPage.objects.published(for_user=request.user)
+        wiki_page = wiki_pages.get(slug=slug)
+    except WikiPage.DoesNotExist:
+        return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
+    src_revision = get_object_or_404(WikiPageRevision, page=wiki_page, pk=revision_pk)
+    new_revision = WikiPageRevision(page=wiki_page,
+            user=request.user if request.user.is_authenticated() else User.objects.get(id=-1))
+    if request.method == 'POST':
+        form = WikiPageForm(data=request.POST or None, instance=wiki_page)
+        if form.is_valid():
+            form.save()
+            new_revision.content = form.cleaned_data["content"]
+            new_revision.description = form.cleaned_data["summary"]
+            new_revision.save()
+            return HttpResponseRedirect(reverse('wiki_page_detail', kwargs={'slug': slug}))
+    else:
+        if src_revision.user:
+            description = _("Reverted to revision of %(time)s by %(user)s.") % \
+                    {'time': src_revision.date_created, 'user': src_revision.user.username}
+        else:
+            description = _("Reverted to anonymous revision of %(time)s.") % \
+                    {'time': src_revision.date_reated}
+        form = WikiPageForm(data=request.POST or None, instance=wiki_page,
+                initial={'content': src_revision.content, 'summary': description})
+    return render(request, 'mezawiki/wiki_page_edit.html',
+                  {'wiki_page': wiki_page, 'form': form, 'src_revision': src_revision})
+
+
 def wiki_page_changes(request, 
                      template="mezawiki/wiki_page_changes.html"):
     """
