@@ -36,7 +36,6 @@
 
 [<a href="{% url wiki_page_edit wiki_page.slug %}">{% trans "Edit page" %}</a> | <a href="{% url wiki_page_history wiki_page.slug %}">{% trans "View history" %}</a>]
 
-
 <h6>
     {% if wiki_page.categories.all.count > 0 %}
     {% trans "Categories" %}:
@@ -48,6 +47,18 @@
 
 {% if wiki_page.featured_image %}
 <p><img src="{{ MEDIA_URL }}{% thumbnail wiki_page.featured_image 600 0 %}"></p>
+{% endif %}
+
+{% if undo_error %}
+<div class="alert alert-error">
+<p>{% blocktrans with wiki_page.get_absolute_url as wiki_page_url %}
+It was impossible to automatically undo the change 
+you have selected. Perhaps the page has been modified too much in the 
+meantime. Review the following content comparison, which represents the 
+change you tried to undo, and apply the changes manually to the latest 
+revision.
+{% endblocktrans %}</p>
+</div>
 {% endif %}
 
 <div class="alert">{% blocktrans with from_revision.date_created as from_time and to_revision.date_created as to_time %}

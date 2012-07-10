@@ -4,6 +4,7 @@ from collections import defaultdict
 from django.http import Http404
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
@@ -222,7 +223,7 @@ def wiki_page_diff(request, slug,
     dmp = diff_match_patch()
     diff = dmp.diff_compute(from_rev.content, to_rev.content, True, 2)
     return render(request, 'mezawiki/wiki_page_diff.html',
-                  {'wiki_page': wiki_page, 'from_revision': from_rev, 'to_revision': to_rev, 'diff': diff})
+                  {'wiki_page': wiki_page, 'from_revision': from_rev, 'to_revision': to_rev, 'diff': diff, 'undo_error': request.REQUEST['undo'] == 'error'})
 
 
 def wiki_page_revert(request, slug, revision_pk):
@@ -302,14 +303,10 @@ def wiki_page_undo(request, slug, revision_pk):
         rdiff = dmp.patch_make(src_revision.content, prev_content)
         content, results = dmp.patch_apply(rdiff, wiki_page.content)
         if False in results:
-            #messages.warning(request, _("It was impossible to automatically undo the change "
-            #        "you have selected. Perhaps the page has been modified too much in the "
-            #        "meantime. Review the following content comparison, which represents the "
-            #        "change you tried to undo, and apply the changes manually to the latest "
-            #        "revision."))
             urldata = {'to_revision_pk': src_revision.pk}
             if prev_revision:
                 urldata['from_revision_pk'] = prev_revision.pk
+            urldata['undo'] = 'error'
             return HttpResponseRedirect("%s?%s" % (
                     reverse('wiki_page_diff', kwargs={'slug': slug}),
                     urlencode(urldata)))
