@@ -222,8 +222,11 @@ def wiki_page_diff(request, slug,
         return HttpResponseNotFound()
     dmp = diff_match_patch()
     diff = dmp.diff_compute(from_rev.content, to_rev.content, True, 2)
+    undo_error = False
+    if 'undo' in request.REQUEST and request.REQUEST['undo'] == 'error':
+        undo_error = True
     return render(request, 'mezawiki/wiki_page_diff.html',
-                  {'wiki_page': wiki_page, 'from_revision': from_rev, 'to_revision': to_rev, 'diff': diff, 'undo_error': request.REQUEST['undo'] == 'error'})
+                  {'wiki_page': wiki_page, 'from_revision': from_rev, 'to_revision': to_rev, 'diff': diff, 'undo_error': undo_error})
 
 
 def wiki_page_revert(request, slug, revision_pk):
