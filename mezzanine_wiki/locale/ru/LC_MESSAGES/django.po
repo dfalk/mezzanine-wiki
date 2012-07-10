@@ -148,12 +148,12 @@ msgstr "У вас нет доступа для просмотра этой пр�
 #: views.py:254
 #, python-format
 msgid "Reverted to revision of %(time)s by %(user)s."
-msgstr "Откат правки от %(time)s пользователя %(user)s."
+msgstr "Откат до правки от %(time)s пользователя %(user)s."
 
 #: views.py:257
 #, python-format
 msgid "Reverted to anonymous revision of %(time)s."
-msgstr "Откат к анонимной правки от %(time)s."
+msgstr "Откат к анонимной правке от %(time)s."
 
 #: views.py:290
 #, python-format
