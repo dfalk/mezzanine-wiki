@@ -43,13 +43,21 @@
 
 [<a href="{{ wiki_page.get_absolute_url }}">{% trans "View Page" %}</a>]
 
+<form method="get" action="{% url wiki_page_diff wiki_page.slug %}">
+
+<button type="submit">{% trans "Compare" %}</button>
+
 <ul style="unstyled">
 {% for revision in revisions %}
 <li>
+    <input type="radio" name="from_revision_pk" value="{{ revision.pk }}" />
+    <input type="radio" name="to_revision_pk" value="{{ revision.pk }}" />
     <a href="{{ revision.get_absolute_url }}">{{ revision.date_modified }}</a> - {{ revision.user }}
 </li>
 {% endfor %}
 </ul>
+
+<button type="submit">{% trans "Compare" %}</button>
 
 {% endblock %}
 

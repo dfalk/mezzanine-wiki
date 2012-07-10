@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from django import VERSION
 from django.utils.translation import ugettext as _
@@ -18,6 +18,7 @@ from mezzanine.utils.views import render, paginate
 from mezzanine_wiki.forms import WikiPageForm, WikiPageNewForm
 from mezzanine_wiki.utils import urlize_title, deurlize_title
 from mezzanine_wiki import defaults as wiki_settings
+from diff_match_patch import diff_match_patch
 
 
 def wiki_index(request, template_name='mezawiki/wiki_page_detail.html'):
@@ -197,6 +198,30 @@ def wiki_page_revision(request, slug, rev_id,
     context = {"wiki_page": wiki_page, "revision": revision}
     templates = [u"mezawiki/wiki_page_detail_%s.html" % unicode(slug), template]
     return render(request, templates, context)
+
+
+def wiki_page_diff(request, slug,
+                     template="mezawiki/wiki_page_diff.html"):
+    slug_original = slug
+    slug = urlize_title(slug)
+    if slug != slug_original:
+        return HttpResponseRedirect(
+            reverse('wiki_page_diff', args=[slug])
+        )
+    try:
+        wiki_pages = WikiPage.objects.published(for_user=request.user)
+        wiki_page = wiki_pages.get(slug=slug)
+    except WikiPage.DoesNotExist:
+        return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
+    try:
+        from_rev = wiki_page.wikipagerevision_set.get(pk=request.REQUEST['from_revision_pk'])
+        to_rev = wiki_page.wikipagerevision_set.get(pk=request.REQUEST['to_revision_pk'])
+    except (KeyError, WikiPage.DoesNotExist):
+        return HttpResponseNotFound()
+    dmp = diff_match_patch()
+    diff = dmp.diff_compute(from_rev.content, to_rev.content, True, 2)
+    return render(request, 'mezawiki/wiki_page_diff.html',
+                  {'wiki_page': wiki_page, 'from_revision': from_rev, 'to_revision': to_rev, 'diff': diff})
 
 
 def wiki_page_changes(request, 

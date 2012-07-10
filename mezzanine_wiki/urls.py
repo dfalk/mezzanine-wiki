@@ -17,6 +17,8 @@ urlpatterns = patterns("mezzanine_wiki.views",
         name="wiki_page_history"),
     url("^(?P<slug>.*)/history/(?P<rev_id>\d+)/$", "wiki_page_revision",
         name="wiki_page_revision"),
+    url("^(?P<slug>.*)/diff/$", "wiki_page_diff",
+        name="wiki_page_diff"),
     url("^(?P<slug>.*)/edit/$", "wiki_page_edit", name="wiki_page_edit"),
     url("^(?P<slug>.*)/$", "wiki_page_detail", name="wiki_page_detail"),
 )
