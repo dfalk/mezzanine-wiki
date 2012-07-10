@@ -21,6 +21,8 @@ urlpatterns = patterns("mezzanine_wiki.views",
         name="wiki_page_diff"),
     url("^(?P<slug>.*)/revert/(?P<revision_pk>[0-9]+)/$", "wiki_page_revert",
         name="wiki_page_revert"),
+    url("^(?P<slug>.*)/undo/(?P<revision_pk>[0-9]+)/$", "wiki_page_undo",
+        name="wiki_page_undo"),
     url("^(?P<slug>.*)/edit/$", "wiki_page_edit", name="wiki_page_edit"),
     url("^(?P<slug>.*)/$", "wiki_page_detail", name="wiki_page_detail"),
 )

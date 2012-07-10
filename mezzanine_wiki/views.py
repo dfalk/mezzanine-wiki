@@ -19,6 +19,7 @@ from mezzanine_wiki.forms import WikiPageForm, WikiPageNewForm
 from mezzanine_wiki.utils import urlize_title, deurlize_title
 from mezzanine_wiki import defaults as wiki_settings
 from diff_match_patch import diff_match_patch
+from urllib import urlencode, quote
 
 
 def wiki_index(request, template_name='mezawiki/wiki_page_detail.html'):
@@ -253,11 +254,68 @@ def wiki_page_revert(request, slug, revision_pk):
                     {'time': src_revision.date_created, 'user': src_revision.user.username}
         else:
             description = _("Reverted to anonymous revision of %(time)s.") % \
-                    {'time': src_revision.date_reated}
+                    {'time': src_revision.date_created}
         form = WikiPageForm(data=request.POST or None, instance=wiki_page,
                 initial={'content': src_revision.content, 'summary': description})
     return render(request, 'mezawiki/wiki_page_edit.html',
                   {'wiki_page': wiki_page, 'form': form, 'src_revision': src_revision})
+
+
+def wiki_page_undo(request, slug, revision_pk):
+    slug_original = slug
+    slug = urlize_title(slug)
+    if slug != slug_original:
+        return HttpResponseRedirect(
+            reverse('wiki_page_undo', args=[slug, revision_pk])
+        )
+    try:
+        wiki_pages = WikiPage.objects.published(for_user=request.user)
+        wiki_page = wiki_pages.get(slug=slug)
+    except WikiPage.DoesNotExist:
+        return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
+    src_revision = get_object_or_404(WikiPageRevision, page=wiki_page, pk=revision_pk)
+    new_revision = WikiPageRevision(page=wiki_page,
+            user=request.user if request.user.is_authenticated() else User.objects.get(id=-1))
+    if request.method == 'POST':
+        form = WikiPageForm(data=request.POST or None, instance=wiki_page)
+        if form.is_valid():
+            form.save()
+            new_revision.content = form.cleaned_data["content"]
+            new_revision.description = form.cleaned_data["summary"]
+            new_revision.save()
+            return HttpResponseRedirect(reverse('wiki_page_detail', kwargs={'slug': slug}))
+    else:
+        if src_revision.user:
+            description = _("Undid revision of %(time)s by %(user)s.") % \
+                    {'time': src_revision.date_created, 'user': src_revision.user.username}
+        else:
+            description = _("Undid anonymous revision of %(time)s.") % {'time': src_revision.date_created}
+        prev_revision = None
+        try:
+            prev_revision = WikiPageRevision.objects\
+                    .filter(page=wiki_page, date_created__lt=src_revision.date_created)\
+                    .order_by('-date_created')[0]
+            prev_content = prev_revision.content
+        except IndexError:
+            prev_content = ''
+        dmp = diff_match_patch()
+        rdiff = dmp.patch_make(src_revision.content, prev_content)
+        content, results = dmp.patch_apply(rdiff, wiki_page.content)
+        if False in results:
+            #messages.warning(request, _("It was impossible to automatically undo the change "
+            #        "you have selected. Perhaps the page has been modified too much in the "
+            #        "meantime. Review the following content comparison, which represents the "
+            #        "change you tried to undo, and apply the changes manually to the latest "
+            #        "revision."))
+            urldata = {'to_revision_pk': src_revision.pk}
+            if prev_revision:
+                urldata['from_revision_pk'] = prev_revision.pk
+            return HttpResponseRedirect("%s?%s" % (
+                    reverse('wiki_page_diff', kwargs={'slug': slug}),
+                    urlencode(urldata)))
+        form = WikiPageForm(data=request.POST or None, instance=wiki_page,
+                initial={'content': content, 'summary': description})
+    return render(request, 'mezawiki/wiki_page_edit.html', {'wiki_page': wiki_page, 'form': form})
 
 
 def wiki_page_changes(request, 

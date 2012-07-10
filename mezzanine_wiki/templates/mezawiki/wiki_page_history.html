@@ -52,8 +52,9 @@
 <li>
     <input type="radio" name="from_revision_pk" value="{{ revision.pk }}" />
     <input type="radio" name="to_revision_pk" value="{{ revision.pk }}" />
-    <a href="{% url wiki_page_revert wiki_page.slug revision.pk %}">{% trans "Revert" %}</a>
     <a href="{{ revision.get_absolute_url }}">{{ revision.date_modified }}</a> - {{ revision.user }}{% if revision.description %}, {{ revision.description }}{% endif %}
+    (<a href="{% url wiki_page_revert wiki_page.slug revision.pk %}">{% trans "revert" %}</a> |
+    <a href="{% url wiki_page_undo wiki_page.slug revision.pk %}">{% trans "undo" %}</a>)
 </li>
 {% endfor %}
 </ul>
