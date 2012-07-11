@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-10 16:27+0400\n"
+"POT-Creation-Date: 2012-07-11 13:14+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,52 +20,56 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 
-#: defaults.py:8
+#: defaults.py:8 defaults.py:9
 msgid "Wiki default index page"
-msgstr "Вики страница по умолчанию"
+msgstr "Страница по умолчанию"
 
-#: defaults.py:15
+#: defaults.py:16
 msgid "Wiki uses featured image"
-msgstr "Вики страницы с главным изображением"
+msgstr "Главное изображение для страниц"
 
-#: defaults.py:22
+#: defaults.py:23 defaults.py:24
 msgid "Wiki pages per page"
-msgstr "Список вики страниц в списке"
+msgstr "Количество страниц на одной странице списка"
 
-#: defaults.py:29
+#: defaults.py:31
 msgid "Wiki markup language filter"
-msgstr "Фильтр разметки вики"
+msgstr "Фильтр разметки"
 
-#: defaults.py:36
+#: defaults.py:38
 msgid "Wiki text widget class"
-msgstr "Класс виджета для текста вики"
+msgstr "Класс виджета для текста"
 
-#: defaults.py:46
+#: defaults.py:48
 msgid "Opened"
 msgstr "Открытая"
 
-#: defaults.py:47
+#: defaults.py:49
 msgid "Registered"
 msgstr "Для зарегистрированных"
 
-#: defaults.py:48
+#: defaults.py:50
 msgid "Moderated"
 msgstr "Модерируемая"
 
-#: defaults.py:49
+#: defaults.py:51
 msgid "Closed"
 msgstr "Закрытая"
 
-#: defaults.py:54
+#: defaults.py:56
 msgid "Wiki privacy"
-msgstr "Вики страница по умолчанию"
+msgstr "Доступность правок"
+
+#: defaults.py:57
+msgid "Designates who can edit wiki pages"
+msgstr "Определяет, кто может редактировать страницы"
 
 #: fields.py:23
 #, python-format
 msgid "Could not import the value of settings.WIKI_TEXT_WIDGET_CLASS: %s"
 msgstr ""
 
-#: forms.py:15 forms.py:28
+#: forms.py:15
 msgid "Edit summary"
 msgstr "Описание правки"
 
@@ -125,11 +129,11 @@ msgstr "Вики правка"
 msgid "Wiki page revisions"
 msgstr "Вики правки"
 
-#: models.py:132
+#: models.py:135
 msgid "Wiki Category"
 msgstr "Вики категория"
 
-#: models.py:133
+#: models.py:136
 msgid "Wiki Categories"
 msgstr "Вики категории"
 
@@ -145,31 +149,31 @@ msgstr "У вас нет доступа для создания новых ст�
 msgid "You don't have permission to view this wiki page revision."
 msgstr "У вас нет доступа для просмотра этой правки."
 
-#: views.py:254
+#: views.py:257
 #, python-format
 msgid "Reverted to revision of %(time)s by %(user)s."
 msgstr "Откат до правки от %(time)s пользователя %(user)s."
 
-#: views.py:257
+#: views.py:260
 #, python-format
 msgid "Reverted to anonymous revision of %(time)s."
 msgstr "Откат к анонимной правке от %(time)s."
 
-#: views.py:290
+#: views.py:293
 #, python-format
 msgid "Undid revision of %(time)s by %(user)s."
 msgstr "Отмена правки от %(time)s пользователя %(user)s."
 
-#: views.py:293
+#: views.py:296
 #, python-format
 msgid "Undid anonymous revision of %(time)s."
 msgstr "Отмена анонимной правки от %(time)s. "
 
-#: views.py:350
+#: views.py:353
 msgid "You don't have permission to edit this wiki page."
 msgstr "У вас нет доступа для редактирования этой страницы."
 
-#: views.py:413
+#: views.py:416
 msgid "You don't have permission to create wiki page."
 msgstr "У вас нет доступа для создания страниц."
 
