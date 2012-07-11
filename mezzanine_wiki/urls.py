@@ -4,8 +4,8 @@ from django.conf.urls.defaults import patterns, url
 # Wiki patterns.
 urlpatterns = patterns("mezzanine_wiki.views",
     url("^$", "wiki_index", name="wiki_index"),
+    url("^pages/$", "wiki_page_list", name="wiki_page_list"),
     url("^pages:new/$", "wiki_page_new", name="wiki_page_new"),
-    url("^pages:list/$", "wiki_page_list", name="wiki_page_list"),
     url("^pages:changes/$", "wiki_page_changes", name="wiki_page_changes"),
     url("^tag:(?P<tag>.*)/$", "wiki_page_list", name="wiki_page_list_tag"),
     url("^category:(?P<category>.*)/$", "wiki_page_list",
