@@ -124,7 +124,6 @@ class WikiPageRevision(Ownable, TimeStamped):
         return (url_name, (), kwargs)
 
 
-
 class WikiCategory(Slugged):
     """
     A category for grouping wiki pages.
