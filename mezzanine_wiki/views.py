@@ -27,9 +27,10 @@ def wiki_index(request, template_name='mezawiki/wiki_page_detail.html'):
     """
     Redirects to the default wiki index name.
     """
+    if settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_CLOSED:
+        return HttpResponseRedirect(reverse('wiki_page_list'))
     return HttpResponseRedirect(
-        reverse('wiki_page_detail', args=[settings.WIKI_DEFAULT_INDEX])
-    )
+            reverse('wiki_page_detail', args=[settings.WIKI_DEFAULT_INDEX]))
 
 
 def wiki_page_list(request, tag=None, username=None,
