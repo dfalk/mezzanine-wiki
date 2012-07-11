@@ -1,6 +1,4 @@
-
 from datetime import datetime
-
 from django.contrib.auth.models import User
 from django.db.models import Count
 
@@ -28,22 +26,6 @@ def html_diff(diff):
         elif op == diff_match_patch.DIFF_EQUAL:
             html.append("<span>%s</span>" % text)
     return mark_safe("".join(html))
-
-
-@register.as_tag
-def wiki_months(*args):
-    """
-    Put a list of dates for wiki pages into the template context.
-    """
-    dates = WikiPage.objects.published().values_list("publish_date", flat=True)
-    date_dicts = [{"date": datetime(d.year, d.month, 1)} for d in dates]
-    month_dicts = []
-    for date_dict in date_dicts:
-        if date_dict not in month_dicts:
-            month_dicts.append(date_dict)
-    for i, date_dict in enumerate(month_dicts):
-        month_dicts[i]["page_count"] = date_dicts.count(date_dict)
-    return month_dicts
 
 
 @register.as_tag
