@@ -403,6 +403,9 @@ def can_add_wikipage(user):
                    ) and (user.has_perm('mezzanine_wiki.add_wikipage')):
         return True
 
+    # TODO closed.
+    #elif (settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_CLOSED):
+
     # Fallback to closed page.
     return False
 
