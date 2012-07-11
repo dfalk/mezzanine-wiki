@@ -115,6 +115,9 @@ class WikiPageRevision(Ownable, TimeStamped):
         ordering = ("-date_created",)
         permissions = WIKIPAGE_REVISION_PERMISSIONS
 
+    def __unicode__(self):
+        return "%s" % self.date_created
+
     @models.permalink
     def get_absolute_url(self):
         url_name = "wiki_page_revision"
