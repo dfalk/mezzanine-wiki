@@ -16,7 +16,7 @@ from mezzanine_wiki.models import WikiPage, WikiCategory, WikiPageRevision
 from mezzanine.conf import settings
 from mezzanine.generic.models import AssignedKeyword, Keyword
 from mezzanine.utils.views import render, paginate
-from mezzanine_wiki.forms import WikiPageForm, WikiPageNewForm
+from mezzanine_wiki.forms import WikiPageForm
 from mezzanine_wiki.utils import urlize_title, deurlize_title
 from mezzanine_wiki import defaults as wiki_settings
 from diff_match_patch import diff_match_patch
@@ -416,7 +416,7 @@ def wiki_page_new(request, template="mezawiki/wiki_page_new.html"):
             _("You don't have permission to create wiki page."))
 
     if request.method == 'POST':
-        form = WikiPageNewForm(request.POST)
+        form = WikiPageForm(request.POST)
         if form.is_valid():
             page = form.save(commit=False)
             try:
@@ -440,7 +440,7 @@ def wiki_page_new(request, template="mezawiki/wiki_page_new.html"):
             return HttpResponseRedirect(
                 reverse('wiki_page_detail', args=[page.slug]))
     else:
-        form = WikiPageNewForm(initial={'status': 1})
+        form = WikiPageForm(initial={'status': 1})
 
     context = {'form': form}
     return render(request, template, context)
