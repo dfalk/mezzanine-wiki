@@ -333,11 +333,7 @@ def wiki_page_changes(request,
 def wiki_page_edit(request, slug, 
                      template="mezawiki/wiki_page_edit.html"):
     """
-    Displays the form for editing and deleting a page.
-
-    Custom templates are checked for using the name
-    ``mezawiki/wiki_page_edit_XXX.html``
-    where ``XXX`` is the wiki pages's slug.
+    Displays the form for editing a page.
     """
     try:
         #wiki_pages = WikiPage.objects.published(for_user=request.user)
@@ -382,8 +378,7 @@ def wiki_page_edit(request, slug,
 
     context = {'wiki_page': wiki_page, 'form': form,
                'title': deurlize_title(slug)}
-    templates = [u"mezawiki/wiki_page_edit_%s.html" % unicode(slug), template]
-    return render(request, templates, context)
+    return render(request, template, context)
 
 
 def can_add_wikipage(user):
