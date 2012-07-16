@@ -10,6 +10,7 @@ from mezzanine.generic.fields import CommentsField, RatingField
 from mezzanine_wiki.fields import WikiTextField
 from mezzanine_wiki import defaults as wiki_settings
 from mezzanine.utils.timezone import now
+from mezzanine_wiki.managers import DisplayableManager
 
 
 WIKIPAGE_PERMISSIONS = (
@@ -56,6 +57,8 @@ class WikiPage(Displayable, Ownable, TimeStamped):
                                upload_to="wiki", max_length=255, blank=True)
 
     search_fields = ("content",)
+
+    objects = DisplayableManager()
 
     class Meta:
         verbose_name = _("Wiki page")
