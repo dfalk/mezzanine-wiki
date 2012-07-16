@@ -1,11 +1,11 @@
-
 from copy import deepcopy
-
 from django.contrib import admin
 
-from mezzanine_wiki.models import WikiPage, WikiCategory
 from mezzanine.conf import settings
+from mezzanine.core.admin import StackedDynamicInlineAdmin
 from mezzanine.core.admin import DisplayableAdmin, OwnableAdmin
+
+from mezzanine_wiki.models import WikiPage, WikiPageRevision, WikiCategory
 
 
 wikipage_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
@@ -16,6 +16,11 @@ if settings.WIKI_USE_FEATURED_IMAGE:
     wikipage_fieldsets[0][1]["fields"].insert(-2, "featured_image")
 
 
+class WikiPageRevisionInline(StackedDynamicInlineAdmin):
+    model = WikiPageRevision
+    extra = 0
+
+
 class WikiPageAdmin(DisplayableAdmin, OwnableAdmin):
     """
     Admin class for wiki pages.
@@ -24,6 +29,7 @@ class WikiPageAdmin(DisplayableAdmin, OwnableAdmin):
     fieldsets = wikipage_fieldsets
     list_display = ("title", "user", "status", "admin_link")
     filter_horizontal = ("categories",)
+    inlines = (WikiPageRevisionInline,)
 
     def save_form(self, request, form, change):
         """

@@ -1,0 +1,11 @@
+.diff span {
+    color: black;
+}
+
+.diff span.added {
+    color: green;
+}
+
+.diff span.removed {
+    color: red;
+}

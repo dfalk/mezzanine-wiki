@@ -5,8 +5,9 @@ from mezzanine.conf import register_setting
 
 register_setting(
     name="WIKI_DEFAULT_INDEX",
+    label=_("Wiki default index page"),
     description=_("Wiki default index page"),
-    editable=False,
+    editable=True,
     default="Main_page",
 )
 
@@ -19,6 +20,7 @@ register_setting(
 
 register_setting(
     name="WIKI_PAGES_PER_PAGE",
+    label=_("Wiki pages per page"),
     description=_("Wiki pages per page"),
     editable=True,
     default=10,
@@ -51,7 +53,8 @@ WIKI_PRIVACY_CHOICES = (
 
 register_setting(
     name="WIKI_PRIVACY",
-    description=_("Wiki privacy"),
+    label=_("Wiki privacy"),
+    description=_("Designates who can edit wiki pages"),
     editable=True,
     choices=WIKI_PRIVACY_CHOICES,
     default=WIKI_PRIVACY_REGISTERED,

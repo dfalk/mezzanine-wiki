@@ -1,4 +1,3 @@
-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
@@ -118,12 +117,14 @@ class WikiPageRevision(Ownable, TimeStamped):
         ordering = ("-date_created",)
         permissions = WIKIPAGE_REVISION_PERMISSIONS
 
+    def __unicode__(self):
+        return "%s" % self.date_created
+
     @models.permalink
     def get_absolute_url(self):
         url_name = "wiki_page_revision"
         kwargs = {"slug": self.page.slug, "rev_id": self.id}
         return (url_name, (), kwargs)
-
 
 
 class WikiCategory(Slugged):

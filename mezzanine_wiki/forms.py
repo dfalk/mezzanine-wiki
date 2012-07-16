@@ -17,22 +17,11 @@ class WikiPageForm(forms.ModelForm):
 
     class Meta:
         model = WikiPage
-        fields = ('status', 'content', 'summary',)
+        fields = ('title', 'content', 'summary', 'status',)
 
     def __init__(self, *args, **kwargs):
         super(WikiPageForm, self).__init__(*args, **kwargs)
         self.fields['content'].widget.attrs['class'] = 'wiki-textarea'
-
-
-class WikiPageNewForm(forms.ModelForm):
-    summary = forms.CharField(label=_("Edit summary"),
-                                  max_length=400, required=False)
-
-    class Meta:
-        model = WikiPage
-        fields = ('status', 'title', 'content', 'summary')
-
-    def __init__(self, *args, **kwargs):
-        super(WikiPageNewForm, self).__init__(*args, **kwargs)
-        self.fields['content'].widget.attrs['class'] = 'wiki-textarea'
-
+        # Hide title for existing page
+        if kwargs.has_key('instance'):
+            del self.fields["title"]
