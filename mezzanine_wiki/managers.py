@@ -18,7 +18,7 @@ class PublishedManager(Manager):
         from mezzanine.core.models import CONTENT_STATUS_PUBLISHED, CONTENT_STATUS_DRAFT
         if for_user is not None and for_user.is_staff:
             return self.all()
-        if for_user.has_perm('mezzanine_wiki.view_wikipage'):
+        if for_user is not None and for_user.has_perm('mezzanine_wiki.view_wikipage'):
             status_filter = Q(status=CONTENT_STATUS_PUBLISHED) | Q(status=CONTENT_STATUS_DRAFT)
         else:
             status_filter = Q(status=CONTENT_STATUS_PUBLISHED)
