@@ -4,9 +4,10 @@ from collections import defaultdict
 from django.http import Http404
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.contrib import messages
 from django.shortcuts import get_object_or_404
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponseRedirect, HttpResponseForbidden, HttpResponseNotFound
 from django.contrib.auth.decorators import login_required
 from django import VERSION
 from django.utils.translation import ugettext as _
@@ -15,18 +16,21 @@ from mezzanine_wiki.models import WikiPage, WikiCategory, WikiPageRevision
 from mezzanine.conf import settings
 from mezzanine.generic.models import AssignedKeyword, Keyword
 from mezzanine.utils.views import render, paginate
-from mezzanine_wiki.forms import WikiPageForm, WikiPageNewForm
+from mezzanine_wiki.forms import WikiPageForm
 from mezzanine_wiki.utils import urlize_title, deurlize_title
 from mezzanine_wiki import defaults as wiki_settings
+from diff_match_patch import diff_match_patch
+from urllib import urlencode, quote
 
 
 def wiki_index(request, template_name='mezawiki/wiki_page_detail.html'):
     """
     Redirects to the default wiki index name.
     """
+    if settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_CLOSED:
+        return HttpResponseRedirect(reverse('wiki_page_list'))
     return HttpResponseRedirect(
-        reverse('wiki_page_detail', args=[settings.WIKI_DEFAULT_INDEX])
-    )
+            reverse('wiki_page_detail', args=[settings.WIKI_DEFAULT_INDEX]))
 
 
 def wiki_page_list(request, tag=None, username=None,
@@ -199,6 +203,122 @@ def wiki_page_revision(request, slug, rev_id,
     return render(request, templates, context)
 
 
+def wiki_page_diff(request, slug,
+                     template="mezawiki/wiki_page_diff.html"):
+    slug_original = slug
+    slug = urlize_title(slug)
+    if slug != slug_original:
+        return HttpResponseRedirect(
+            reverse('wiki_page_diff', args=[slug])
+        )
+    try:
+        wiki_pages = WikiPage.objects.published(for_user=request.user)
+        wiki_page = wiki_pages.get(slug=slug)
+    except WikiPage.DoesNotExist:
+        return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
+    try:
+        from_rev = wiki_page.wikipagerevision_set.get(pk=request.REQUEST['from_revision_pk'])
+        to_rev = wiki_page.wikipagerevision_set.get(pk=request.REQUEST['to_revision_pk'])
+    except (KeyError, WikiPage.DoesNotExist):
+        return HttpResponseNotFound()
+    dmp = diff_match_patch()
+    diff = dmp.diff_compute(from_rev.content, to_rev.content, True, 2)
+    undo_error = False
+    if 'undo' in request.REQUEST and request.REQUEST['undo'] == 'error':
+        undo_error = True
+    return render(request, 'mezawiki/wiki_page_diff.html',
+                  {'wiki_page': wiki_page, 'from_revision': from_rev, 'to_revision': to_rev, 'diff': diff, 'undo_error': undo_error})
+
+
+def wiki_page_revert(request, slug, revision_pk):
+    slug_original = slug
+    slug = urlize_title(slug)
+    if slug != slug_original:
+        return HttpResponseRedirect(
+            reverse('wiki_page_revert', args=[slug, revision_pk])
+        )
+    try:
+        wiki_pages = WikiPage.objects.published(for_user=request.user)
+        wiki_page = wiki_pages.get(slug=slug)
+    except WikiPage.DoesNotExist:
+        return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
+    src_revision = get_object_or_404(WikiPageRevision, page=wiki_page, pk=revision_pk)
+    new_revision = WikiPageRevision(page=wiki_page,
+            user=request.user if request.user.is_authenticated() else User.objects.get(id=-1))
+    if request.method == 'POST':
+        form = WikiPageForm(data=request.POST or None, instance=wiki_page)
+        if form.is_valid():
+            form.save()
+            new_revision.content = form.cleaned_data["content"]
+            new_revision.description = form.cleaned_data["summary"]
+            new_revision.save()
+            return HttpResponseRedirect(reverse('wiki_page_detail', kwargs={'slug': slug}))
+    else:
+        if src_revision.user:
+            description = _("Reverted to revision of %(time)s by %(user)s.") % \
+                    {'time': src_revision.date_created, 'user': src_revision.user.username}
+        else:
+            description = _("Reverted to anonymous revision of %(time)s.") % \
+                    {'time': src_revision.date_created}
+        form = WikiPageForm(data=request.POST or None, instance=wiki_page,
+                initial={'content': src_revision.content, 'summary': description})
+    return render(request, 'mezawiki/wiki_page_edit.html',
+                  {'wiki_page': wiki_page, 'form': form, 'src_revision': src_revision})
+
+
+def wiki_page_undo(request, slug, revision_pk):
+    slug_original = slug
+    slug = urlize_title(slug)
+    if slug != slug_original:
+        return HttpResponseRedirect(
+            reverse('wiki_page_undo', args=[slug, revision_pk])
+        )
+    try:
+        wiki_pages = WikiPage.objects.published(for_user=request.user)
+        wiki_page = wiki_pages.get(slug=slug)
+    except WikiPage.DoesNotExist:
+        return HttpResponseRedirect(reverse('wiki_page_edit', args=[slug]))
+    src_revision = get_object_or_404(WikiPageRevision, page=wiki_page, pk=revision_pk)
+    new_revision = WikiPageRevision(page=wiki_page,
+            user=request.user if request.user.is_authenticated() else User.objects.get(id=-1))
+    if request.method == 'POST':
+        form = WikiPageForm(data=request.POST or None, instance=wiki_page)
+        if form.is_valid():
+            form.save()
+            new_revision.content = form.cleaned_data["content"]
+            new_revision.description = form.cleaned_data["summary"]
+            new_revision.save()
+            return HttpResponseRedirect(reverse('wiki_page_detail', kwargs={'slug': slug}))
+    else:
+        if src_revision.user:
+            description = _("Undid revision of %(time)s by %(user)s.") % \
+                    {'time': src_revision.date_created, 'user': src_revision.user.username}
+        else:
+            description = _("Undid anonymous revision of %(time)s.") % {'time': src_revision.date_created}
+        prev_revision = None
+        try:
+            prev_revision = WikiPageRevision.objects\
+                    .filter(page=wiki_page, date_created__lt=src_revision.date_created)\
+                    .order_by('-date_created')[0]
+            prev_content = prev_revision.content
+        except IndexError:
+            prev_content = ''
+        dmp = diff_match_patch()
+        rdiff = dmp.patch_make(src_revision.content, prev_content)
+        content, results = dmp.patch_apply(rdiff, wiki_page.content)
+        if False in results:
+            urldata = {'to_revision_pk': src_revision.pk}
+            if prev_revision:
+                urldata['from_revision_pk'] = prev_revision.pk
+            urldata['undo'] = 'error'
+            return HttpResponseRedirect("%s?%s" % (
+                    reverse('wiki_page_diff', kwargs={'slug': slug}),
+                    urlencode(urldata)))
+        form = WikiPageForm(data=request.POST or None, instance=wiki_page,
+                initial={'content': content, 'summary': description})
+    return render(request, 'mezawiki/wiki_page_edit.html', {'wiki_page': wiki_page, 'form': form})
+
+
 def wiki_page_changes(request, 
                      template="mezawiki/wiki_page_changes.html"):
     """
@@ -213,11 +333,7 @@ def wiki_page_changes(request,
 def wiki_page_edit(request, slug, 
                      template="mezawiki/wiki_page_edit.html"):
     """
-    Displays the form for editing and deleting a page.
-
-    Custom templates are checked for using the name
-    ``mezawiki/wiki_page_edit_XXX.html``
-    where ``XXX`` is the wiki pages's slug.
+    Displays the form for editing a page.
     """
     try:
         #wiki_pages = WikiPage.objects.published(for_user=request.user)
@@ -262,8 +378,7 @@ def wiki_page_edit(request, slug,
 
     context = {'wiki_page': wiki_page, 'form': form,
                'title': deurlize_title(slug)}
-    templates = [u"mezawiki/wiki_page_edit_%s.html" % unicode(slug), template]
-    return render(request, templates, context)
+    return render(request, template, context)
 
 
 def can_add_wikipage(user):
@@ -283,6 +398,9 @@ def can_add_wikipage(user):
                    ) and (user.has_perm('mezzanine_wiki.add_wikipage')):
         return True
 
+    # TODO closed.
+    #elif (settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_CLOSED):
+
     # Fallback to closed page.
     return False
 
@@ -297,7 +415,7 @@ def wiki_page_new(request, template="mezawiki/wiki_page_new.html"):
             _("You don't have permission to create wiki page."))
 
     if request.method == 'POST':
-        form = WikiPageNewForm(request.POST)
+        form = WikiPageForm(request.POST)
         if form.is_valid():
             page = form.save(commit=False)
             try:
@@ -321,7 +439,7 @@ def wiki_page_new(request, template="mezawiki/wiki_page_new.html"):
             return HttpResponseRedirect(
                 reverse('wiki_page_detail', args=[page.slug]))
     else:
-        form = WikiPageNewForm(initial={'status': 1})
+        form = WikiPageForm(initial={'status': 1})
 
     context = {'form': form}
     return render(request, template, context)

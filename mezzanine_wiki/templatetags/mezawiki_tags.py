@@ -1,6 +1,4 @@
-
 from datetime import datetime
-
 from django.contrib.auth.models import User
 from django.db.models import Count
 
@@ -8,25 +6,26 @@ from mezzanine_wiki.models import WikiPage, WikiCategory
 from mezzanine import template
 from mezzanine.conf import settings
 from mezzanine.utils.importing import import_dotted_path
+from django.utils.safestring import mark_safe
+from diff_match_patch import diff_match_patch
 
 
 register = template.Library()
 
 
-@register.as_tag
-def wiki_months(*args):
-    """
-    Put a list of dates for wiki pages into the template context.
-    """
-    dates = WikiPage.objects.published().values_list("publish_date", flat=True)
-    date_dicts = [{"date": datetime(d.year, d.month, 1)} for d in dates]
-    month_dicts = []
-    for date_dict in date_dicts:
-        if date_dict not in month_dicts:
-            month_dicts.append(date_dict)
-    for i, date_dict in enumerate(month_dicts):
-        month_dicts[i]["page_count"] = date_dicts.count(date_dict)
-    return month_dicts
+@register.filter
+def html_diff(diff):
+    html = []
+    for (op, data) in diff:
+        text = (data.replace("&", "&amp;").replace("<", "&lt;")\
+                .replace(">", "&gt;").replace("\n", "<br />"),)
+        if op == diff_match_patch.DIFF_INSERT:
+            html.append("<span class=\"added\">%s</span>" % text)
+        elif op == diff_match_patch.DIFF_DELETE:
+            html.append("<span class=\"removed\">%s</del>" % text)
+        elif op == diff_match_patch.DIFF_EQUAL:
+            html.append("<span>%s</span>" % text)
+    return mark_safe("".join(html))
 
 
 @register.as_tag
