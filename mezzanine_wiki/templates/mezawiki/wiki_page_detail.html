@@ -18,11 +18,11 @@
 
 {% block breadcrumb_menu %}
 <li>
-    <a href="{% url home %}">{% trans "Home" %}</a>
+    <a href="{% url 'home' %}">{% trans "Home" %}</a>
     <span class="divider">/</span>
 </li>
 <li>
-    <a href="{% url wiki_index %}">{{ page.richtextpage.title }}</a>
+    <a href="{% url 'wiki_index' %}">{{ page.richtextpage.title }}</a>
     <span class="divider">/</span>
 </li>
 <li class="active">{{ wiki_page.title }}</li>
@@ -30,14 +30,14 @@
 
 {% block main %}
 
-[<a href="{% url wiki_page_edit wiki_page.slug %}">{% trans "Edit page" %}</a> | <a href="{% url wiki_page_history wiki_page.slug %}">{% trans "View history" %}</a>]
+[<a href="{% url 'wiki_page_edit' wiki_page.slug %}">{% trans "Edit page" %}</a> | <a href="{% url 'wiki_page_history' wiki_page.slug %}">{% trans "View history" %}</a>]
 
 
 <h6>
     {% if wiki_page.categories.all.count > 0 %}
     {% trans "Categories" %}:
     {% for category in wiki_page.categories.all %}
-    <a href="{% url wiki_page_list_category category.slug %}">{{ category }}</a>
+    <a href="{% url 'wiki_page_list_category' category.slug %}">{{ category }}</a>
     {% endfor %}
     {% endif %}
 </h6>
@@ -54,7 +54,7 @@
 <ul class="unstyled tags">
     <li>{% trans "Tags" %}:</li>
     {% for tag in tags %}
-    <li><a href="{% url wiki_page_list_tag tag.slug %}">{{ tag }}</a></li>
+    <li><a href="{% url 'wiki_page_list_tag' tag.slug %}">{{ tag }}</a></li>
     {% endfor %}
 </ul>
 {% endspaceless %}

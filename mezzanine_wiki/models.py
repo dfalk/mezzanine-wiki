@@ -8,7 +8,7 @@ from mezzanine.core.models import Displayable, Ownable, RichText, Slugged
 from mezzanine.generic.fields import CommentsField, RatingField
 from mezzanine_wiki.fields import WikiTextField
 from mezzanine_wiki import defaults as wiki_settings
-from mezzanine.utils.timezone import now
+from django.utils.timezone import now
 from mezzanine_wiki.managers import DisplayableManager
 
 

@@ -25,15 +25,15 @@
 
 {% block breadcrumb_menu %}
 <li>
-    <a href="{% url home %}">{% trans "Home" %}</a>
+    <a href="{% url 'home' %}">{% trans "Home" %}</a>
     <span class="divider">/</span>
 </li>
 <li>
-    <a href="{% url wiki_index %}">{{ page.richtextpage.title }}</a>
+    <a href="{% url 'wiki_index' %}">{{ page.richtextpage.title }}</a>
     <span class="divider">/</span>
 </li>
 <li>
-    <a href="{% url wiki_page_detail wiki_page.slug %}">{{ wiki_page.title }}</a>
+    <a href="{% url 'wiki_page_detail' wiki_page.slug %}">{{ wiki_page.title }}</a>
     <span class="divider">/</span>
 </li>
 <li class="active">{% trans "Viewing history" %}</li>
@@ -43,7 +43,7 @@
 
 [<a href="{{ wiki_page.get_absolute_url }}">{% trans "View Page" %}</a>]
 
-<form method="get" action="{% url wiki_page_diff wiki_page.slug %}">
+<form method="get" action="{% url 'wiki_page_diff' wiki_page.slug %}">
 
 <button type="submit">{% trans "Compare" %}</button>
 
@@ -53,8 +53,8 @@
     <input type="radio" name="from_revision_pk" value="{{ revision.pk }}" />
     <input type="radio" name="to_revision_pk" value="{{ revision.pk }}" />
     <a href="{{ revision.get_absolute_url }}">{{ revision.date_modified }}</a> - {{ revision.user }}{% if revision.description %}, {{ revision.description }}{% endif %}
-    (<a href="{% url wiki_page_revert wiki_page.slug revision.pk %}">{% trans "revert" %}</a> |
-    <a href="{% url wiki_page_undo wiki_page.slug revision.pk %}">{% trans "undo" %}</a>)
+    (<a href="{% url 'wiki_page_revert' wiki_page.slug revision.pk %}">{% trans "revert" %}</a> |
+    <a href="{% url 'wiki_page_undo' wiki_page.slug revision.pk %}">{% trans "undo" %}</a>)
 </li>
 {% endfor %}
 </ul>

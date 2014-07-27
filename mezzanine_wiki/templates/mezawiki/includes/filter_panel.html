@@ -2,13 +2,13 @@
 
 <h3>{% trans "Wiki" %}</h3>
 <ul class="unstyled recent-posts">
-<li><a href="{% url wiki_index %}"
+<li><a href="{% url 'wiki_index' %}"
     >{% trans "Main page" %}</a></li>
-<li><a href="{% url wiki_page_list %}"
+<li><a href="{% url 'wiki_page_list' %}"
     >{% trans "Page list" %}</a></li>
-<li><a href="{% url wiki_page_changes %}"
+<li><a href="{% url 'wiki_page_changes' %}"
     >{% trans "Recent changes" %}</a></li>
-<li><a href="{% url wiki_page_new %}"
+<li><a href="{% url 'wiki_page_new' %}"
     >{% trans "New page" %}</a></li>
 </ul>
 
@@ -28,7 +28,7 @@
 <h3>{% trans "Categories" %}</h3>
 <ul class="unstyled">
 {% for category in categories %}
-<li><a href="{% url wiki_page_list_category category.slug %}"
+<li><a href="{% url 'wiki_page_list_category' category.slug %}"
     >{{ category }}</a> ({{ category.post_count }})</li>
 {% endfor %}
 </ul>
@@ -40,7 +40,7 @@
 <ul class="unstyled tags">
 {% for tag in tags %}
 <li>
-    <a href="{% url wiki_page_list_tag tag.slug %}"
+    <a href="{% url 'wiki_page_list_tag' tag.slug %}"
         class="tag-weight-{{ tag.weight }}">{{ tag }}</a>
     ({{ tag.item_count }})
 </li>

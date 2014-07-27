@@ -1,7 +1,7 @@
 from django.db.models import Manager, Q, CharField, TextField, get_models
 from mezzanine.conf import settings
 from mezzanine.core.managers import CurrentSiteManager, SearchableManager
-from mezzanine.utils.timezone import now
+from django.utils.timezone import now
 
 
 class PublishedManager(Manager):

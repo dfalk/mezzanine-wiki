@@ -9,6 +9,7 @@ from mezzanine_wiki import __version__ as version
 install_requires = [
     "mezzanine >= 1.1.2",
     "markdown",
+    "diff-match-patch",
 ]
 
 try:

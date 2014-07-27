@@ -13,13 +13,13 @@ class Migration(SchemaMigration):
 
 
         # Changing field 'WikiPage.rating'
-        db.alter_column('mezzanine_wiki_wikipage', 'rating', self.gf('mezzanine.generic.fields.RatingField')(object_id_field='object_pk', to=orm['generic.Rating'], frozen_by_south=True))
+        #db.alter_column('mezzanine_wiki_wikipage', 'rating', self.gf('mezzanine.generic.fields.RatingField')(object_id_field='object_pk', to=orm['generic.Rating'], frozen_by_south=True))
 
         # Changing field 'WikiPage.keywords'
-        db.alter_column('mezzanine_wiki_wikipage', 'keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True))
+        #db.alter_column('mezzanine_wiki_wikipage', 'keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True))
 
         # Changing field 'WikiPage.comments'
-        db.alter_column('mezzanine_wiki_wikipage', 'comments', self.gf('mezzanine.generic.fields.CommentsField')(object_id_field='object_pk', to=orm['generic.ThreadedComment'], frozen_by_south=True))
+        #db.alter_column('mezzanine_wiki_wikipage', 'comments', self.gf('mezzanine.generic.fields.CommentsField')(object_id_field='object_pk', to=orm['generic.ThreadedComment'], frozen_by_south=True))
 
     def backwards(self, orm):
         # Adding field 'WikiPage.privacy'
@@ -29,13 +29,13 @@ class Migration(SchemaMigration):
 
 
         # Changing field 'WikiPage.rating'
-        db.alter_column('mezzanine_wiki_wikipage', 'rating', self.gf('mezzanine.generic.fields.RatingField')(object_id_field='object_pk', to=orm['generic.Rating']))
+        #db.alter_column('mezzanine_wiki_wikipage', 'rating', self.gf('mezzanine.generic.fields.RatingField')(object_id_field='object_pk', to=orm['generic.Rating']))
 
         # Changing field 'WikiPage.keywords'
-        db.alter_column('mezzanine_wiki_wikipage', 'keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword']))
+        #db.alter_column('mezzanine_wiki_wikipage', 'keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword']))
 
         # Changing field 'WikiPage.comments'
-        db.alter_column('mezzanine_wiki_wikipage', 'comments', self.gf('mezzanine.generic.fields.CommentsField')(object_id_field='object_pk', to=orm['generic.ThreadedComment']))
+        #db.alter_column('mezzanine_wiki_wikipage', 'comments', self.gf('mezzanine.generic.fields.CommentsField')(object_id_field='object_pk', to=orm['generic.ThreadedComment']))
 
     models = {
         'auth.group': {
@@ -129,7 +129,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('title',)", 'object_name': 'WikiPage'},
             'allow_comments': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'categories': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'wikipages'", 'blank': 'True', 'to': "orm['mezzanine_wiki.WikiCategory']"}),
-            'comments': ('mezzanine.generic.fields.CommentsField', [], {'object_id_field': "'object_pk'", 'to': "orm['generic.ThreadedComment']", 'frozen_by_south': 'True'}),
+            #'comments': ('mezzanine.generic.fields.CommentsField', [], {'object_id_field': "'object_pk'", 'to': "orm['generic.ThreadedComment']", 'frozen_by_south': 'True'}),
             'comments_count': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'content': ('mezzanine_wiki.fields.WikiTextField', [], {}),
             'date_created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
@@ -139,10 +139,10 @@ class Migration(SchemaMigration):
             'featured_image': ('mezzanine.core.fields.FileField', [], {'max_length': '255', 'null': 'True', 'blank': 'True'}),
             'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': "orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
+            #'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': "orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
             'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
             'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'rating': ('mezzanine.generic.fields.RatingField', [], {'object_id_field': "'object_pk'", 'to': "orm['generic.Rating']", 'frozen_by_south': 'True'}),
+            #'rating': ('mezzanine.generic.fields.RatingField', [], {'object_id_field': "'object_pk'", 'to': "orm['generic.Rating']", 'frozen_by_south': 'True'}),
             'rating_average': ('django.db.models.fields.FloatField', [], {'default': '0'}),
             'rating_count': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'short_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
