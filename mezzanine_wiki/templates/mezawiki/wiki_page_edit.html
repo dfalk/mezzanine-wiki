@@ -27,24 +27,15 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
-    <a href="{% url 'home' %}">{% trans "Home" %}</a>
-    <span class="divider">/</span>
-</li>
-<li>
-    <a href="{% url 'wiki_index' %}">{{ page.richtextpage.title }}</a>
-    <span class="divider">/</span>
-</li>
+{{ block.super }}
 {% if not wiki_page.is_initial %}
 <li>
     <a href="{{ wiki_page.get_absolute_url }}">{{ wiki_page.title }}</a>
-    <span class="divider">/</span>
 </li>
 <li class="active">{% trans "Editing" %}</li>
 {% else %}
 <li>
     {{ title }}
-    <span class="divider">/</span>
 </li>
 <li class="active">{% trans "Creating" %}</li>
 {% endif %}

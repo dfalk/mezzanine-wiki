@@ -21,15 +21,9 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
-    <a href="{% url 'home' %}">{% trans "Home" %}</a>
-    <span class="divider">/</span>
-</li>
-<li>
-    <a href="{% url 'wiki_index' %}">{{ page.richtextpage.title }}</a>
-    <span class="divider">/</span>
-</li>
-<li class="active">{{ wiki_page.title }}</li>
+{{ block.super }}
+<li>{{ wiki_page.title }}</li>
+<li class="active">{% trans "View diff" %} </li>
 {% endblock %}
 
 {% block main %}

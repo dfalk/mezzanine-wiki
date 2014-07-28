@@ -24,17 +24,9 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
-    <a href="{% url 'home' %}">{% trans "Home" %}</a>
-    <span class="divider">/</span>
-</li>
-<li>
-    <a href="{% url 'wiki_index' %}">{{ page.richtextpage.title }}</a>
-    <span class="divider">/</span>
-</li>
+{{ block.super }}
 <li>
     <a href="{% url 'wiki_page_detail' wiki_page.slug %}">{{ wiki_page.title }}</a>
-    <span class="divider">/</span>
 </li>
 <li class="active">{% trans "Viewing history" %}</li>
 {% endblock %}
