@@ -4,6 +4,17 @@ Overview
 
 Wiki application for Mezzanine.
 
+Features:
+
+- markdown syntax with [[Wiki links]] extension
+- page history and diff viewing
+
+Requirements:
+
+- mezzanine >= 3.1
+- markdown
+- diff-match-patch
+
 
 =========
 Mezzanine
