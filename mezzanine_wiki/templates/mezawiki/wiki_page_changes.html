@@ -36,7 +36,7 @@
 <ul style="unstyled">
 {% for revision in wiki_revisions%}
 <li>
-    {{ revision.date_modified }} - <a href="{{ revision.get_absolute_url }}">{{ revision.page.title }}</a> ({{ revision.user }}{% if revision.description %}, {{ revision.description }}{% endif %})
+    {{ revision.updated }} - <a href="{{ revision.get_absolute_url }}">{{ revision.page.title }}</a> ({{ revision.user }}{% if revision.description %}, {{ revision.description }}{% endif %})
 </li>
 {% endfor %}
 </ul>

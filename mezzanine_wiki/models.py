@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 from mezzanine.conf import settings
 from mezzanine.core.fields import FileField
-from mezzanine.core.models import Displayable, Ownable, RichText, Slugged
+from mezzanine.core.models import Displayable, Ownable, RichText, Slugged, TimeStamped
 from mezzanine.generic.fields import CommentsField, RatingField
 from mezzanine_wiki.fields import WikiTextField
 from mezzanine_wiki import defaults as wiki_settings
@@ -24,24 +24,7 @@ WIKIPAGE_REVISION_PERMISSIONS = (
 )
 
 
-class TimeStamped(models.Model):
-    """
-    Time stamped abstract model.
-    """
-
-    date_created = models.DateTimeField(_('Created'),
-                                        default=now)
-    date_modified = models.DateTimeField(_('Modified'))
-
-    def save(self):
-        self.date_modified = now()
-        super(TimeStamped, self).save()
-
-    class Meta:
-        abstract = True
-
-
-class WikiPage(Displayable, Ownable, TimeStamped):
+class WikiPage(Displayable, Ownable):
     """
     A wiki page.
     """
@@ -113,11 +96,11 @@ class WikiPageRevision(Ownable, TimeStamped):
     class Meta:
         verbose_name = _("Wiki page revision")
         verbose_name_plural = _("Wiki page revisions")
-        ordering = ("-date_created",)
+        ordering = ("-created",)
         permissions = WIKIPAGE_REVISION_PERMISSIONS
 
     def __unicode__(self):
-        return "%s" % self.date_created
+        return "%s" % self.created
 
     def get_absolute_url(self):
         return reverse("wiki_page_revision", kwargs={"slug": self.page.slug,

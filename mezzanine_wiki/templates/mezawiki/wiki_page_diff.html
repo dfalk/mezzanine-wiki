@@ -61,7 +61,7 @@ revision.
 </div>
 {% endif %}
 
-<div class="alert">{% blocktrans with from_revision.date_created as from_time and to_revision.date_created as to_time %}
+<div class="alert">{% blocktrans with from_revision.created as from_time and to_revision.created as to_time %}
 Comparing content of the page between {{ from_time }} and {{ to_time }}.{% endblocktrans %}
 </div>
 <div class="diff">

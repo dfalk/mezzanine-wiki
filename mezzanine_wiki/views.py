@@ -256,10 +256,10 @@ def wiki_page_revert(request, slug, revision_pk):
     else:
         if src_revision.user:
             description = _("Reverted to revision of %(time)s by %(user)s.") % \
-                    {'time': src_revision.date_created, 'user': src_revision.user.username}
+                    {'time': src_revision.created, 'user': src_revision.user.username}
         else:
             description = _("Reverted to anonymous revision of %(time)s.") % \
-                    {'time': src_revision.date_created}
+                    {'time': src_revision.created}
         form = WikiPageForm(data=request.POST or None, instance=wiki_page,
                 initial={'content': src_revision.content, 'summary': description})
     return render(request, 'mezawiki/wiki_page_edit.html',
@@ -292,14 +292,14 @@ def wiki_page_undo(request, slug, revision_pk):
     else:
         if src_revision.user:
             description = _("Undid revision of %(time)s by %(user)s.") % \
-                    {'time': src_revision.date_created, 'user': src_revision.user.username}
+                    {'time': src_revision.created, 'user': src_revision.user.username}
         else:
-            description = _("Undid anonymous revision of %(time)s.") % {'time': src_revision.date_created}
+            description = _("Undid anonymous revision of %(time)s.") % {'time': src_revision.created}
         prev_revision = None
         try:
             prev_revision = WikiPageRevision.objects\
-                    .filter(page=wiki_page, date_created__lt=src_revision.date_created)\
-                    .order_by('-date_created')[0]
+                    .filter(page=wiki_page, created__lt=src_revision.created)\
+                    .order_by('-created')[0]
             prev_content = prev_revision.content
         except IndexError:
             prev_content = ''
