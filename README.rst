@@ -34,13 +34,12 @@ Quick start
         'mezzanine_wiki',
     )
 
-2. Include the polls URLconf in your project urls.py like this::
+2. Include the wiki URLconf in your project urls.py like this::
 
     url(r'^wiki/', include('mezzanine_wiki.urls')),
 
-3. Run `python manage.py migrate` to create the polls models.
+3. Run `python manage.py migrate` to create the wiki models.
 
-4. Start the development server and visit http://127.0.0.1:8000/wiki/
-   to create a wiki page.
+4. Restart server.
 
-5. Visit http://127.0.0.1:8000/wiki/ to participate in the poll.
+5. Visit /wiki/ to use the wiki. 
