@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 from mezzanine_wiki import __version__ as version
 
 install_requires = [
-    "mezzanine >= 1.1.2",
+    "mezzanine >= 3.1",
     "markdown",
     "diff-match-patch",
 ]
