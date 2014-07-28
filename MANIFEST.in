@@ -1,3 +1,5 @@
 include CHANGELOG LICENSE README.rst
 recursive-include mezzanine_wiki *
-
+include mezzanine_wiki/locale/
+include mezzanine_wiki/static/
+include mezzanine_wiki/templates/
