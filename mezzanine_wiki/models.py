@@ -1,4 +1,6 @@
+# -*- coding: utf-8 -*-
 from django.db import models
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
@@ -74,7 +76,7 @@ class WikiPage(Displayable, Ownable, TimeStamped):
 
         # Everyone.
         if (settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_OPENED):
-             return True
+            return True
 
         # Registered users.
         elif (settings.WIKI_PRIVACY == wiki_settings.WIKI_PRIVACY_REGISTERED
@@ -94,11 +96,8 @@ class WikiPage(Displayable, Ownable, TimeStamped):
         # Fallback to closed page.
         return False
 
-    @models.permalink
     def get_absolute_url(self):
-        url_name = "wiki_page_detail"
-        kwargs = {"slug": self.slug}
-        return (url_name, (), kwargs)
+        return reverse("wiki_page_detail", kwargs={"slug": self.slug})
 
 
 class WikiPageRevision(Ownable, TimeStamped):
@@ -120,11 +119,9 @@ class WikiPageRevision(Ownable, TimeStamped):
     def __unicode__(self):
         return "%s" % self.date_created
 
-    @models.permalink
     def get_absolute_url(self):
-        url_name = "wiki_page_revision"
-        kwargs = {"slug": self.page.slug, "rev_id": self.id}
-        return (url_name, (), kwargs)
+        return reverse("wiki_page_revision", kwargs={"slug": self.page.slug,
+                                                     "rev_id": self.id})
 
 
 class WikiCategory(Slugged):
@@ -136,6 +133,5 @@ class WikiCategory(Slugged):
         verbose_name = _("Wiki Category")
         verbose_name_plural = _("Wiki Categories")
 
-    @models.permalink
     def get_absolute_url(self):
-        return ("wiki_page_list_category", (), {"slug": self.slug})
+        return reverse("wiki_page_list_category", kwargs={"slug": self.slug})
