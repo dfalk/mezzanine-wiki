@@ -14,6 +14,7 @@ Requirements:
 - mezzanine >= 3.1
 - markdown
 - diff-match-patch
+- south
 
 
 =========
@@ -44,13 +45,17 @@ Quick start
         ...
         'mezzanine_wiki',
     )
+    
+2. Add "mezzanine_wiki.WikiPage" to SEARCH_MODEL_CHOICES setting like this:
 
-2. Include the wiki URLconf in your project urls.py like this::
+    SEARCH_MODEL_CHOICES = ('pages.Page', 'blog.BlogPost', 'mezzanine_wiki.WikiPage')
+
+3. Include the wiki URLconf in your project urls.py like this::
 
     url(r'^wiki/', include('mezzanine_wiki.urls')),
 
-3. Run `python manage.py migrate` to create the wiki models.
+4. Run `python manage.py migrate` to create the wiki models.
 
-4. Restart server.
+5. Restart server.
 
-5. Visit /wiki/ to use the wiki. 
+6. Visit /wiki/ to use the wiki. 
